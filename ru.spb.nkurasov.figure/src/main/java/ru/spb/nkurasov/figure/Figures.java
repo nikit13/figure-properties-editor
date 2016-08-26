@@ -53,7 +53,12 @@ public class Figures {
         case "stringProperty":
             return new StringPropertyType(propertyName, defaultValue);
         case "integerProperty":
-            return new IntegerPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue));
+            String minValue = property.getAttribute("minValue");
+            String maxValue = property.getAttribute("maxValue");
+            return new IntegerPropertyType(propertyName, 
+                    defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue),
+                    minValue == null || minValue.isEmpty() ? null : Integer.valueOf(minValue), 
+                    maxValue == null || maxValue.isEmpty() ? null : Integer.valueOf(maxValue));
         case "groupProperty":
             return new GroupPropertyType(propertyName, readProperties(property.getChildren()));
         default:

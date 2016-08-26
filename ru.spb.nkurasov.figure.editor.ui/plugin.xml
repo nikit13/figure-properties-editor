@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="ru.spb.nkurasov.figure.editor.ui.FigureEditorPerspectiveFactory"
+            id="ru.spb.nkurasov.figure.editor.ui.perspective"
+            name="Figure Editor">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="ru.spb.nkurasov.figure.editor.ui.FiguresView"
+            icon="icons/shapes.png"
+            id="ru.spb.nkurasov.figure.editor.ui.view.figures"
+            name="Figures"
+            restorable="true">
+      </view>
+      <view
+            class="ru.spb.nkurasov.figure.editor.ui.FigurePropertiesView"
+            id="ru.spb.nkurasov.figure.editor.ui.view.properties"
+            name="Figure Properties"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>
