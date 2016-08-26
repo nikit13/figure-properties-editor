@@ -49,9 +49,12 @@
 
    <element name="figure">
       <complexType>
-         <sequence>
-            <element ref="properties"/>
-         </sequence>
+         <choice minOccurs="1" maxOccurs="unbounded">
+            <element ref="booleanProperty"/>
+            <element ref="integerProperty"/>
+            <element ref="stringProperty"/>
+            <element ref="groupProperty"/>
+         </choice>
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
@@ -59,16 +62,6 @@
                </documentation>
             </annotation>
          </attribute>
-      </complexType>
-   </element>
-
-   <element name="properties">
-      <complexType>
-         <choice minOccurs="1" maxOccurs="unbounded">
-            <element ref="booleanProperty"/>
-            <element ref="integerProperty"/>
-            <element ref="stringProperty"/>
-         </choice>
       </complexType>
    </element>
 

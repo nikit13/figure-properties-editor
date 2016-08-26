@@ -22,13 +22,7 @@ public class Figures {
         for (IConfigurationElement element : figureElements) {
             if (isFigure(element)) {
                 String figureName = element.getAttribute("name");
-                IConfigurationElement[] propertiesElements = element.getChildren("properties");
-                if (propertiesElements.length != 1) {
-                    throw new ReadFigureException("properties element must be specified only once");
-                }
-
-                Collection<FigureProperty> figureProperties = readProperties(propertiesElements[0]);
-
+                Collection<FigureProperty> figureProperties = readProperties(element.getChildren());
                 figures.add(new Figure(figureName, figureProperties));
             }
         }
@@ -36,9 +30,13 @@ public class Figures {
         return figures;
     }
 
-    private static Collection<FigureProperty> readProperties(IConfigurationElement properties) {
-        Collection<FigureProperty> figureProperties = new ArrayList<>();
-        for (IConfigurationElement property : properties.getChildren("property")) {
+    private static Collection<FigureProperty> readProperties(IConfigurationElement[] properties) {
+        if (properties.length == 0) {
+            return Collections.emptyList();
+        }
+
+        Collection<FigureProperty> figureProperties = new ArrayList<>(properties.length);
+        for (IConfigurationElement property : properties) {
             FigureProperty propertyType = readPropertyType(property);
             figureProperties.add(propertyType);
         }
@@ -48,13 +46,16 @@ public class Figures {
     private static FigureProperty readPropertyType(IConfigurationElement property) {
         String propertyName = property.getAttribute("name");
         String defaultValue = property.getAttribute("defaultValue");
-        switch (property.getAttribute("type")) {
-        case "boolean":
+
+        switch (property.getName()) {
+        case "booleanProperty":
             return new BooleanPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue));
-        case "string":
+        case "stringProperty":
             return new StringPropertyType(propertyName, defaultValue);
-        case "integer":
+        case "integerProperty":
             return new IntegerPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue));
+        case "groupProperty":
+            return new GroupPropertyType(propertyName, readProperties(property.getChildren()));
         default:
             throw new ReadFigureException("unknown property type");
         }
