@@ -1,17 +1,17 @@
 package ru.spb.nkurasov.figure;
 
-public class BooleanPropertyType extends AbstractFigureProperty {
+public class BooleanPropertyDefinition extends AbstractFigureProperty {
 
     private final Boolean defaultValue;
 
-    BooleanPropertyType(String name, Boolean defaultValue) {
+    BooleanPropertyDefinition(String name, Boolean defaultValue) {
         super(name);
 
         this.defaultValue = defaultValue;
     }
 
     @Override
-    public void accept(FigurePropertyVisitor visitor) {
+    public void accept(FigurePropertyDefinitionVisitor visitor) {
         visitor.visit(this);
     }
 

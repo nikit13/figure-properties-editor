@@ -1,6 +1,6 @@
 package ru.spb.nkurasov.figure;
 
-public class IntegerPropertyType extends AbstractFigureProperty {
+public class IntegerPropertyDefinition extends AbstractFigureProperty {
 
     private final Integer defaultValue;
 
@@ -8,7 +8,7 @@ public class IntegerPropertyType extends AbstractFigureProperty {
 
     private final Integer maxValue;
 
-    IntegerPropertyType(String name, Integer defaultValue, Integer minValue, Integer maxValue) {
+    IntegerPropertyDefinition(String name, Integer defaultValue, Integer minValue, Integer maxValue) {
         super(name);
 
         this.defaultValue = defaultValue;
@@ -17,7 +17,7 @@ public class IntegerPropertyType extends AbstractFigureProperty {
     }
 
     @Override
-    public void accept(FigurePropertyVisitor visitor) {
+    public void accept(FigurePropertyDefinitionVisitor visitor) {
         visitor.visit(this);
     }
 

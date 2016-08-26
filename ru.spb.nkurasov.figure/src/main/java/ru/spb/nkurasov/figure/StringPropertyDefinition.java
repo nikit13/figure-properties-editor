@@ -1,17 +1,17 @@
 package ru.spb.nkurasov.figure;
 
-public class StringPropertyType extends AbstractFigureProperty {
+public class StringPropertyDefinition extends AbstractFigureProperty {
 
     private final String defaultValue;
 
-    StringPropertyType(String name, String defaultValue) {
+    StringPropertyDefinition(String name, String defaultValue) {
         super(name);
 
         this.defaultValue = defaultValue;
     }
 
     @Override
-    public void accept(FigurePropertyVisitor visitor) {
+    public void accept(FigurePropertyDefinitionVisitor visitor) {
         visitor.visit(this);
     }
 

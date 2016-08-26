@@ -1,11 +1,11 @@
 package ru.spb.nkurasov.figure;
 
-public interface FigureProperty {
+public interface FigurePropertyDefinition {
 
     // TODO maybe add optionality?
     
     String getName();
     
-    void accept(FigurePropertyVisitor visitor);
+    void accept(FigurePropertyDefinitionVisitor visitor);
 
 }

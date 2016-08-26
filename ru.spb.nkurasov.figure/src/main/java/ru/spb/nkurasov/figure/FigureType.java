@@ -6,13 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public final class Figure {
+public final class FigureType {
 
     private final String name;
 
-    private final List<FigureProperty> properties = new ArrayList<>();
+    private final List<FigurePropertyDefinition> properties = new ArrayList<>();
 
-    Figure(String name, Collection<? extends FigureProperty> properties) {
+    FigureType(String name, Collection<? extends FigurePropertyDefinition> properties) {
         if (name == null) {
             throw new IllegalArgumentException("figure name is null");
         }
@@ -29,11 +29,11 @@ public final class Figure {
         return name;
     }
 
-    public Collection<FigureProperty> getProperties() {
+    public Collection<FigurePropertyDefinition> getProperties() {
         return Collections.unmodifiableCollection(properties);
     }
 
-    public Optional<FigureProperty> getProperty(String name) {
+    public Optional<FigurePropertyDefinition> getProperty(String name) {
         if (name == null) {
             throw new IllegalArgumentException();
         }

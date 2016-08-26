@@ -8,61 +8,61 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
-public class Figures {
+public class FigureTypes {
 
     private static final String FIGURE_EXTENSION_ID = "ru.spb.nkurasov.figure";
 
-    public static List<Figure> read() {
+    public static List<FigureType> read() {
         IConfigurationElement[] figureElements = Platform.getExtensionRegistry().getConfigurationElementsFor(FIGURE_EXTENSION_ID);
         if (figureElements.length == 0) {
             return Collections.emptyList();
         }
 
-        List<Figure> figures = new ArrayList<>();
+        List<FigureType> figures = new ArrayList<>();
         for (IConfigurationElement element : figureElements) {
             if (isFigure(element)) {
                 String figureName = element.getAttribute("name");
-                Collection<FigureProperty> figureProperties = readProperties(element.getChildren());
-                figures.add(new Figure(figureName, figureProperties));
+                Collection<FigurePropertyDefinition> figureProperties = readProperties(element.getChildren());
+                figures.add(new FigureType(figureName, figureProperties));
             }
         }
 
         return figures;
     }
 
-    private static Collection<FigureProperty> readProperties(IConfigurationElement[] properties) {
+    private static Collection<FigurePropertyDefinition> readProperties(IConfigurationElement[] properties) {
         if (properties.length == 0) {
             return Collections.emptyList();
         }
 
-        Collection<FigureProperty> figureProperties = new ArrayList<>(properties.length);
+        Collection<FigurePropertyDefinition> figureProperties = new ArrayList<>(properties.length);
         for (IConfigurationElement property : properties) {
-            FigureProperty propertyType = readPropertyType(property);
+            FigurePropertyDefinition propertyType = readPropertyType(property);
             figureProperties.add(propertyType);
         }
         return figureProperties;
     }
 
-    private static FigureProperty readPropertyType(IConfigurationElement property) {
+    private static FigurePropertyDefinition readPropertyType(IConfigurationElement property) {
         String propertyName = property.getAttribute("name");
         String defaultValue = property.getAttribute("defaultValue");
 
         switch (property.getName()) {
         case "booleanProperty":
-            return new BooleanPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue));
+            return new BooleanPropertyDefinition(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue));
         case "stringProperty":
-            return new StringPropertyType(propertyName, defaultValue);
+            return new StringPropertyDefinition(propertyName, defaultValue);
         case "integerProperty":
             boolean boundedBelow = Boolean.valueOf(property.getAttribute("boundedBelow"));
             boolean boundedAbove = Boolean.valueOf(property.getAttribute("boundedAbove"));
             String minValue = property.getAttribute("minValue");
             String maxValue = property.getAttribute("maxValue");
-            return new IntegerPropertyType(propertyName, 
+            return new IntegerPropertyDefinition(propertyName, 
                     defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue),
                     !boundedBelow || minValue == null || minValue.isEmpty() ? null : Integer.valueOf(minValue), 
                     !boundedAbove || maxValue == null || maxValue.isEmpty() ? null : Integer.valueOf(maxValue));
         case "groupProperty":
-            return new GroupPropertyType(propertyName, readProperties(property.getChildren()));
+            return new GroupPropertyDefinition(propertyName, readProperties(property.getChildren()));
         default:
             throw new ReadFigureException("unknown property type");
         }

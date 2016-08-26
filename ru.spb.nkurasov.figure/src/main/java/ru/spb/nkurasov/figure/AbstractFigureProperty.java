@@ -1,6 +1,6 @@
 package ru.spb.nkurasov.figure;
 
-abstract class AbstractFigureProperty implements FigureProperty {
+abstract class AbstractFigureProperty implements FigurePropertyDefinition {
 
     private final String name;
 
