@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="ru.spb.nkurasov.figure.editor.ui.FigureEditorPerspectiveFactory"
+            class="ru.spb.nkurasov.figure.editor.ui.views.FigureEditorPerspectiveFactory"
             id="ru.spb.nkurasov.figure.editor.ui.perspective"
             name="Figure Editor">
       </perspective>
@@ -12,14 +12,14 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="ru.spb.nkurasov.figure.editor.ui.FiguresView"
+            class="ru.spb.nkurasov.figure.editor.ui.views.FiguresView"
             icon="icons/shapes.png"
             id="ru.spb.nkurasov.figure.editor.ui.view.figures"
             name="Figures"
             restorable="true">
       </view>
       <view
-            class="ru.spb.nkurasov.figure.editor.ui.FigurePropertiesView"
+            class="ru.spb.nkurasov.figure.editor.ui.views.FigurePropertiesView"
             id="ru.spb.nkurasov.figure.editor.ui.view.properties"
             name="Figure Properties"
             restorable="true">
