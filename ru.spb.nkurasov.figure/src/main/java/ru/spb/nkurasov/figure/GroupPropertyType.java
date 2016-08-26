@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-class GroupPropertyDefinition extends AbstractFigureProperty {
+class GroupPropertyType extends AbstractFigurePropertyType {
 
-    private final List<FigurePropertyDefinition> propertyTypes = new ArrayList<>();
+    private final List<FigurePropertyType> propertyTypes = new ArrayList<>();
 
-    GroupPropertyDefinition(String name, Collection<? extends FigurePropertyDefinition> childTypes) {
+    GroupPropertyType(String name, Collection<? extends FigurePropertyType> childTypes) {
         super(name);
         if (childTypes == null || childTypes.isEmpty()) {
             throw new IllegalArgumentException("group must contain at least one child property");
@@ -18,10 +18,10 @@ class GroupPropertyDefinition extends AbstractFigureProperty {
     }
 
     @Override
-    public void accept(FigurePropertyDefinitionVisitor visitor) {
+    public void accept(FigurePropertyTypeVisitor visitor) {
         visitor.visit(this);
 
-        for (FigurePropertyDefinition propertyType : propertyTypes) {
+        for (FigurePropertyType propertyType : propertyTypes) {
             propertyType.accept(visitor);
         }
     }

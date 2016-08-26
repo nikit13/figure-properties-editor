@@ -22,7 +22,7 @@ public class FigureTypes {
         for (IConfigurationElement element : figureElements) {
             if (isFigure(element)) {
                 String figureName = element.getAttribute("name");
-                Collection<FigurePropertyDefinition> figureProperties = readProperties(element.getChildren());
+                Collection<FigurePropertyType> figureProperties = readProperties(element.getChildren());
                 figures.add(new FigureType(figureName, figureProperties));
             }
         }
@@ -30,39 +30,39 @@ public class FigureTypes {
         return figures;
     }
 
-    private static Collection<FigurePropertyDefinition> readProperties(IConfigurationElement[] properties) {
+    private static Collection<FigurePropertyType> readProperties(IConfigurationElement[] properties) {
         if (properties.length == 0) {
             return Collections.emptyList();
         }
 
-        Collection<FigurePropertyDefinition> figureProperties = new ArrayList<>(properties.length);
+        Collection<FigurePropertyType> figureProperties = new ArrayList<>(properties.length);
         for (IConfigurationElement property : properties) {
-            FigurePropertyDefinition propertyType = readPropertyType(property);
+            FigurePropertyType propertyType = readPropertyType(property);
             figureProperties.add(propertyType);
         }
         return figureProperties;
     }
 
-    private static FigurePropertyDefinition readPropertyType(IConfigurationElement property) {
+    private static FigurePropertyType readPropertyType(IConfigurationElement property) {
         String propertyName = property.getAttribute("name");
         String defaultValue = property.getAttribute("defaultValue");
 
         switch (property.getName()) {
         case "booleanProperty":
-            return new BooleanPropertyDefinition(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue));
+            return new BooleanPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue));
         case "stringProperty":
-            return new StringPropertyDefinition(propertyName, defaultValue);
+            return new StringPropertyType(propertyName, defaultValue);
         case "integerProperty":
             boolean boundedBelow = Boolean.valueOf(property.getAttribute("boundedBelow"));
             boolean boundedAbove = Boolean.valueOf(property.getAttribute("boundedAbove"));
             String minValue = property.getAttribute("minValue");
             String maxValue = property.getAttribute("maxValue");
-            return new IntegerPropertyDefinition(propertyName, 
+            return new IntegerPropertyType(propertyName, 
                     defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue),
                     !boundedBelow || minValue == null || minValue.isEmpty() ? null : Integer.valueOf(minValue), 
                     !boundedAbove || maxValue == null || maxValue.isEmpty() ? null : Integer.valueOf(maxValue));
         case "groupProperty":
-            return new GroupPropertyDefinition(propertyName, readProperties(property.getChildren()));
+            return new GroupPropertyType(propertyName, readProperties(property.getChildren()));
         default:
             throw new ReadFigureException("unknown property type");
         }

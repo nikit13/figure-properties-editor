@@ -10,9 +10,9 @@ public final class FigureType {
 
     private final String name;
 
-    private final List<FigurePropertyDefinition> properties = new ArrayList<>();
+    private final List<FigurePropertyType> properties = new ArrayList<>();
 
-    FigureType(String name, Collection<? extends FigurePropertyDefinition> properties) {
+    FigureType(String name, Collection<? extends FigurePropertyType> properties) {
         if (name == null) {
             throw new IllegalArgumentException("figure name is null");
         }
@@ -29,11 +29,11 @@ public final class FigureType {
         return name;
     }
 
-    public Collection<FigurePropertyDefinition> getProperties() {
+    public Collection<FigurePropertyType> getProperties() {
         return Collections.unmodifiableCollection(properties);
     }
 
-    public Optional<FigurePropertyDefinition> getProperty(String name) {
+    public Optional<FigurePropertyType> getProperty(String name) {
         if (name == null) {
             throw new IllegalArgumentException();
         }

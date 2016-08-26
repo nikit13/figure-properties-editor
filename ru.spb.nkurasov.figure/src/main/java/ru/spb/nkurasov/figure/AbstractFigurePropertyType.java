@@ -1,10 +1,10 @@
 package ru.spb.nkurasov.figure;
 
-abstract class AbstractFigureProperty implements FigurePropertyDefinition {
+abstract class AbstractFigurePropertyType implements FigurePropertyType {
 
     private final String name;
 
-    AbstractFigureProperty(String name) {
+    AbstractFigurePropertyType(String name) {
         if (name == null) {
             throw new IllegalArgumentException("property name is null");
         }

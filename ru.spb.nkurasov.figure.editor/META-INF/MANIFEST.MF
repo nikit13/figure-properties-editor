@@ -4,3 +4,5 @@ Bundle-Name: Figure Definition
 Bundle-SymbolicName: ru.spb.nkurasov.figure.editor
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: ru.spb.nkurasov.figure
+Export-Package: ru.spb.nkurasov.figure.editor
