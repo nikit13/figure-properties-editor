@@ -1,10 +1,9 @@
 package ru.spb.nkurasov.figure;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
@@ -28,7 +27,7 @@ public class Figures {
                     throw new ReadFigureException("properties element must be specified only once");
                 }
 
-                Map<String, PropertyType<?>> figureProperties = readProperties(propertiesElements[0]);
+                Collection<FigureProperty> figureProperties = readProperties(propertiesElements[0]);
 
                 figures.add(new Figure(figureName, figureProperties));
             }
@@ -37,25 +36,25 @@ public class Figures {
         return figures;
     }
 
-    private static Map<String, PropertyType<?>> readProperties(IConfigurationElement properties) {
-        Map<String, PropertyType<?>> figureProperties = new HashMap<>();
+    private static Collection<FigureProperty> readProperties(IConfigurationElement properties) {
+        Collection<FigureProperty> figureProperties = new ArrayList<>();
         for (IConfigurationElement property : properties.getChildren("property")) {
-            String propertyName = property.getAttribute("name");
-            PropertyType<?> propertyType = readPropertyType(property);
-            figureProperties.put(propertyName, propertyType);
+            FigureProperty propertyType = readPropertyType(property);
+            figureProperties.add(propertyType);
         }
         return figureProperties;
     }
 
-    private static PropertyType<?> readPropertyType(IConfigurationElement property) {
+    private static FigureProperty readPropertyType(IConfigurationElement property) {
+        String propertyName = property.getAttribute("name");
         String defaultValue = property.getAttribute("defaultValue");
         switch (property.getAttribute("type")) {
         case "boolean":
-            return new BooleanPropertyType(defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue));
+            return new BooleanPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue));
         case "string":
-            return new StringPropertyType(defaultValue);
+            return new StringPropertyType(propertyName, defaultValue);
         case "integer":
-            return new IntegerPropertyType(defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue));
+            return new IntegerPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue));
         default:
             throw new ReadFigureException("unknown property type");
         }

@@ -1,16 +1,18 @@
 package ru.spb.nkurasov.figure;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
 public final class Figure {
 
     private final String name;
 
-    private final Map<String, PropertyType<?>> properties = new HashMap<>();
+    private final List<FigureProperty> properties = new ArrayList<>();
 
-    Figure(String name, Map<String, ? extends PropertyType<?>> properties) {
+    Figure(String name, Collection<? extends FigureProperty> properties) {
         if (name == null) {
             throw new IllegalArgumentException("figure name is null");
         }
@@ -20,14 +22,22 @@ public final class Figure {
         }
 
         this.name = name;
-        this.properties.putAll(properties);
+        this.properties.addAll(properties);
     }
 
     public String getName() {
         return name;
     }
 
-    public Map<String, PropertyType<?>> getProperties() {
-        return Collections.unmodifiableMap(properties);
+    public Collection<FigureProperty> getProperties() {
+        return Collections.unmodifiableCollection(properties);
+    }
+
+    public Optional<FigureProperty> getProperty(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return properties.stream().filter(p -> p.getName().equals(name)).findFirst();
     }
 }

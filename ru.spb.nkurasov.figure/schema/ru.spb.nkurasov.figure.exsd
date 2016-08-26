@@ -64,13 +64,15 @@
 
    <element name="properties">
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="property"/>
-         </sequence>
+         <choice minOccurs="1" maxOccurs="unbounded">
+            <element ref="booleanProperty"/>
+            <element ref="integerProperty"/>
+            <element ref="stringProperty"/>
+         </choice>
       </complexType>
    </element>
 
-   <element name="property">
+   <element name="booleanProperty">
       <complexType>
          <attribute name="name" type="string" use="required">
             <annotation>
@@ -79,24 +81,76 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="type" use="required">
+         <attribute name="defaultValue" type="boolean">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
-            <simpleType>
-               <restriction base="string">
-                  <enumeration value="boolean">
-                  </enumeration>
-                  <enumeration value="integer">
-                  </enumeration>
-                  <enumeration value="string">
-                  </enumeration>
-               </restriction>
-            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="integerProperty">
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="minValue" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="maxValue" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
          </attribute>
          <attribute name="defaultValue" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="stringProperty">
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="defaultValue" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="groupProperty">
+      <complexType>
+         <choice minOccurs="1" maxOccurs="unbounded">
+            <element ref="booleanProperty"/>
+            <element ref="integerProperty"/>
+            <element ref="stringProperty"/>
+         </choice>
+         <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
                   
