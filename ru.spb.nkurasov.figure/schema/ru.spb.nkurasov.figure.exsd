@@ -93,7 +93,21 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="boundedBelow" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="minValue" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="boundedAbove" type="boolean" use="default" value="false">
             <annotation>
                <documentation>
                   
