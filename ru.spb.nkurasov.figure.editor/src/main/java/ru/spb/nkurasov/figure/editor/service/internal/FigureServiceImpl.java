@@ -17,15 +17,15 @@ import ru.spb.nkurasov.figure.editor.service.RemoveFigureListener;
 class FigureServiceImpl implements FigureService {
 
     private final List<Figure> figures = new ArrayList<Figure>();
-    
+
     private Optional<Figure> activeFigure = Optional.empty();
-    
+
     private final Set<AddFigureListener> addListeners = new HashSet<>();
-    
+
     private final Set<RemoveFigureListener> removeListeners = new HashSet<>();
-    
+
     private final Set<FigureActivationChangedListener> activationListeners = new HashSet<>();
-    
+
     FigureServiceImpl() {
     }
 
@@ -43,7 +43,7 @@ class FigureServiceImpl implements FigureService {
         if (figure == null) {
             throw new IllegalArgumentException("figure is null");
         }
-        
+
         final boolean result = figures.remove(figure);
         if (result) {
             fireFigureRemoved(figure);
@@ -61,9 +61,12 @@ class FigureServiceImpl implements FigureService {
         if (figure != null && !figures.contains(figure)) {
             throw new IllegalStateException("figure not registered");
         }
-        
+
+        Figure old = activeFigure.orElse(null);
         activeFigure = Optional.ofNullable(figure);
-        fireFigureActivated(figure);
+        if (old != null && figure != null && !old.equals(figure)) {
+            fireFigureActivated(figure);
+        }
     }
 
     @Override
@@ -111,19 +114,19 @@ class FigureServiceImpl implements FigureService {
     public boolean removeFigureActivationChangedListener(FigureActivationChangedListener l) {
         return l != null && activationListeners.remove(l);
     }
-    
+
     private void fireFigureAdded(Figure figure) {
         for (AddFigureListener l : addListeners) {
             l.onFigureAdded(figure);
         }
     }
-    
+
     private void fireFigureRemoved(Figure figure) {
         for (RemoveFigureListener l : removeListeners) {
             l.onFigureRemoved(figure);
         }
     }
-    
+
     private void fireFigureActivated(Figure figure) {
         for (FigureActivationChangedListener l : activationListeners) {
             l.onFigureActivated(figure);
