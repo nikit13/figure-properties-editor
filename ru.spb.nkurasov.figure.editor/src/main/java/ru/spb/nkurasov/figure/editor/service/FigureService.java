@@ -1,6 +1,8 @@
-package ru.spb.nkurasov.figure.editor;
+package ru.spb.nkurasov.figure.editor.service;
 
 import java.util.Collection;
+
+import ru.spb.nkurasov.figure.editor.Figure;
 
 public interface FigureService {
     
