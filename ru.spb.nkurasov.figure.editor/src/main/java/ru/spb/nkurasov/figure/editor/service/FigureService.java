@@ -18,5 +18,17 @@ public interface FigureService {
     Optional<Figure> getActiveFigure();
 
     boolean isFigureActivated();
+    
+    void addFigureAddedListener(AddFigureListener l);
+    
+    boolean removeFigureAddedListener(AddFigureListener l);
+    
+    void addFigureRemovedListener(RemoveFigureListener l);
+    
+    boolean removeFigureRemovedListener(RemoveFigureListener l);
+    
+    void addFigureActivationChangedListener(FigureActivationChangedListener l);
+    
+    boolean removeFigureActivationChangedListener(FigureActivationChangedListener l);
 
 }
