@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-class GroupPropertyType extends AbstractFigurePropertyType {
+public class GroupPropertyType extends AbstractFigurePropertyType {
 
     private final List<FigurePropertyType> propertyTypes = new ArrayList<>();
 

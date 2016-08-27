@@ -18,4 +18,8 @@ public class BooleanPropertyType extends AbstractFigurePropertyType {
     public Boolean getDefaultValue() {
         return defaultValue;
     }
+    
+    public boolean hasDefaultValue() {
+        return defaultValue != null;
+    }
 }

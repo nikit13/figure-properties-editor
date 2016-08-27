@@ -11,6 +11,12 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
     IntegerPropertyType(String name, Integer defaultValue, Integer minValue, Integer maxValue) {
         super(name);
 
+        if (minValue != null && maxValue != null && minValue > maxValue) {
+            throw new IllegalStateException("error set range: min value '" + minValue + "' greater than max value '" + maxValue + "'");
+        }
+
+        // TODO add range checks
+        
         this.defaultValue = defaultValue;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -24,11 +30,11 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
     public Integer getDefaultValue() {
         return defaultValue;
     }
-    
+
     public Integer getMinValue() {
         return minValue;
     }
-    
+
     public Integer getMaxValue() {
         return maxValue;
     }
