@@ -6,11 +6,19 @@ import java.util.Collections;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.IViewerObservableValue;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,6 +30,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
 import ru.spb.nkurasov.figure.FigureType;
+import ru.spb.nkurasov.figure.editor.Figure;
 import ru.spb.nkurasov.figure.editor.service.FigureService;
 
 public class AddFigureHandler extends AbstractHandler {
@@ -32,16 +41,21 @@ public class AddFigureHandler extends AbstractHandler {
         AddFigureDialog dialog = new AddFigureDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 figureService.getAvailableTypes());
         if (dialog.open() == Dialog.OK) {
-            // TODO create new figure
-            throw new UnsupportedOperationException();
+            figureService.addFigure(dialog.createFigure());
         }
-        
+
         return null;
     }
 
     private static class AddFigureDialog extends TitleAreaDialog {
 
         private final Collection<FigureType> availableTypes;
+
+        private final WritableValue<String> figureName = WritableValue.withValueType(String.class);
+
+        private final WritableValue<FigureType> figureType = WritableValue.withValueType(FigureType.class);
+
+        private final DataBindingContext context = new DataBindingContext();
 
         public AddFigureDialog(Shell parentShell, Collection<? extends FigureType> figureTypes) {
             super(parentShell);
@@ -73,6 +87,10 @@ public class AddFigureHandler extends AbstractHandler {
             Text nameText = new Text(container, SWT.BORDER);
             nameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
+            ISWTObservableValue<String> targetName = WidgetProperties.textText(SWT.Modify).observe(nameText);
+            context.bindValue(targetName, figureName, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy<>(
+                    UpdateValueStrategy.POLICY_NEVER));
+
             Label typeLabel = new Label(container, SWT.NONE);
             typeLabel.setText("Figure Type:");
             typeLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, false));
@@ -83,9 +101,15 @@ public class AddFigureHandler extends AbstractHandler {
             typeCombo.setLabelProvider(new FigureTypeNameLabelProvider());
             typeCombo.setInput(availableTypes);
 
-            // TODO add binding
+            IViewerObservableValue<Viewer> targetType = ViewerProperties.singleSelection().observe(typeCombo);
+            context.bindValue(targetType, figureType, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy<>(
+                    UpdateValueStrategy.POLICY_NEVER));
 
             return control;
+        }
+
+        public Figure createFigure() {
+            return new Figure(figureName.getValue(), figureType.getValue());
         }
 
         private static class FigureTypeNameLabelProvider extends LabelProvider {
