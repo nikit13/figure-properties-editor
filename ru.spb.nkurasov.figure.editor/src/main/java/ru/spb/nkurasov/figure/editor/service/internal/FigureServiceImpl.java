@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import ru.spb.nkurasov.figure.editor.Figure;
@@ -18,7 +17,7 @@ class FigureServiceImpl implements FigureService {
 
     private final List<Figure> figures = new ArrayList<Figure>();
 
-    private Optional<Figure> activeFigure = Optional.empty();
+    private List<Figure> activeFigures = new ArrayList<Figure>();
 
     private final Set<AddFigureListener> addListeners = new HashSet<>();
 
@@ -46,8 +45,8 @@ class FigureServiceImpl implements FigureService {
 
         final boolean result = figures.remove(figure);
         if (result) {
-            if (activeFigure.filter(figure::equals).isPresent()) {
-                setActiveFigure(null);
+            if (activeFigures.remove(figure)) {
+                fireFigureActivationChanged(Collections.unmodifiableList(activeFigures));
             }
             fireFigureRemoved(figure);
         }
@@ -60,26 +59,26 @@ class FigureServiceImpl implements FigureService {
     }
 
     @Override
-    public void setActiveFigure(Figure figure) {
-        if (figure != null && !figures.contains(figure)) {
-            throw new IllegalStateException("figure not registered");
+    public void setActiveFigures(Collection<? extends Figure> figures) {
+        for (Figure figure : figures) {
+            if (!this.figures.contains(figure)) {
+                throw new IllegalStateException("figure not registered");
+            }
         }
-
-        Figure old = activeFigure.orElse(null);
-        activeFigure = Optional.ofNullable(figure);
-        if (old != null && figure != null && !old.equals(figure)) {
-            fireFigureActivated(figure);
-        }
+        
+        this.activeFigures.clear();
+        this.activeFigures.addAll(figures);
+        fireFigureActivationChanged(Collections.unmodifiableList(activeFigures));
     }
 
     @Override
-    public Optional<Figure> getActiveFigure() {
-        return activeFigure;
+    public List<Figure> getActiveFigures() {
+        return Collections.unmodifiableList(activeFigures);
     }
 
     @Override
     public boolean isFigureActivated() {
-        return activeFigure.isPresent();
+        return !activeFigures.isEmpty();
     }
 
     @Override
@@ -130,9 +129,9 @@ class FigureServiceImpl implements FigureService {
         }
     }
 
-    private void fireFigureActivated(Figure figure) {
+    private void fireFigureActivationChanged(Collection<? extends Figure> figures) {
         for (FigureActivationChangedListener l : activationListeners) {
-            l.onFigureActivated(figure);
+            l.onFigureActivationChanged(figures);
         }
     }
 }

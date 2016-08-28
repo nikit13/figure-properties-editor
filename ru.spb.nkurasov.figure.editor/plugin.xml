@@ -11,7 +11,7 @@
       <sourceProvider
             provider="ru.spb.nkurasov.figure.editor.service.internal.FigureSourceProvider">
          <variable
-               name="activeFigure"
+               name="activeFigures"
                priorityLevel="workbench">
          </variable>
       </sourceProvider>

@@ -12,9 +12,9 @@ import ru.spb.nkurasov.figure.editor.service.FigureService;
 
 public class FigureSourceProvider extends AbstractSourceProvider {
 
-    private static final String ACTIVE_FIGURE = "activeFigure";
+    private static final String ACTIVE_FIGURES = "activeFigures";
 
-    private final FigureActivationChangedListener activationListener = f -> fireSourceChanged(ISources.WORKBENCH, ACTIVE_FIGURE, f);
+    private final FigureActivationChangedListener activationListener = f -> fireSourceChanged(ISources.WORKBENCH, ACTIVE_FIGURES, f.toArray());
 
     private FigureService figureService;
 
@@ -30,13 +30,13 @@ public class FigureSourceProvider extends AbstractSourceProvider {
     @Override
     public Map getCurrentState() {
         Map<String, Object> currentState = new HashMap<>();
-        currentState.put(ACTIVE_FIGURE, figureService.getActiveFigure().orElse(null));
+        currentState.put(ACTIVE_FIGURES, figureService.getActiveFigures().toArray());
         return currentState;
     }
 
     @Override
     public String[] getProvidedSourceNames() {
-        return new String[] { ACTIVE_FIGURE };
+        return new String[] { ACTIVE_FIGURES };
     }
 
     @Override

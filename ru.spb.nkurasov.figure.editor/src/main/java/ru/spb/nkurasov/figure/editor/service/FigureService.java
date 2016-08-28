@@ -1,7 +1,7 @@
 package ru.spb.nkurasov.figure.editor.service;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 import ru.spb.nkurasov.figure.editor.Figure;
 
@@ -13,9 +13,9 @@ public interface FigureService {
 
     Collection<Figure> getFigures();
 
-    void setActiveFigure(Figure figure);
+    void setActiveFigures(Collection<? extends Figure> figures);
 
-    Optional<Figure> getActiveFigure();
+    List<Figure> getActiveFigures();
 
     boolean isFigureActivated();
     
