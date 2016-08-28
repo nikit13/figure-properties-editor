@@ -19,6 +19,7 @@
 		<module>ru.spb.nkurasov.figure</module>
 		<module>ru.spb.nkurasov.figure.editor</module>
 		<module>ru.spb.nkurasov.figure.editor.ui</module>
+		<module>ru.spb.nkurasov.figure.editor.application</module>
 	</modules>
 
 	<repositories>
