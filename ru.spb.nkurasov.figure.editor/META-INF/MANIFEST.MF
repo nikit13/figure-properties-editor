@@ -5,5 +5,6 @@ Bundle-SymbolicName: ru.spb.nkurasov.figure.editor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: ru.spb.nkurasov.figure
-Export-Package: ru.spb.nkurasov.figure.editor
+Export-Package: ru.spb.nkurasov.figure.editor,
+ ru.spb.nkurasov.figure.editor.service
 Require-Bundle: org.eclipse.ui;bundle-version="3.106.1"

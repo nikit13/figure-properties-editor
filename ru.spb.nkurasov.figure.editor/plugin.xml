@@ -8,6 +8,13 @@
          <service
                serviceClass="ru.spb.nkurasov.figure.editor.service.FigureService"></service>
       </serviceFactory>
+      <sourceProvider
+            provider="ru.spb.nkurasov.figure.editor.service.internal.FigureSourceProvider">
+         <variable
+               name="activeFigure"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
    </extension>
 
 </plugin>
