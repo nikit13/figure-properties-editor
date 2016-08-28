@@ -25,5 +25,74 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="ru.spb.nkurasov.figure.editor.ui.actions.AddFigureHandler"
+            commandId="ru.spb.nkurasov.figure.editor.ui.command.addFigure">
+      </handler>
+      <handler
+            class="ru.spb.nkurasov.figure.editor.ui.actions.RemoveFigureHandler"
+            commandId="ru.spb.nkurasov.figure.editor.ui.command.removeFigure">
+         <enabledWhen>
+            <reference
+                  definitionId="ru.spb.nkurasov.figure.editor.ui.definition.figureActivated">
+            </reference>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="ru.spb.nkurasov.figure.editor.ui.category.figures"
+            name="Figure Actions">
+      </category>
+      <command
+            categoryId="ru.spb.nkurasov.figure.editor.ui.category.figures"
+            id="ru.spb.nkurasov.figure.editor.ui.command.addFigure"
+            name="Add Figure">
+      </command>
+      <command
+            categoryId="ru.spb.nkurasov.figure.editor.ui.category.figures"
+            id="ru.spb.nkurasov.figure.editor.ui.command.removeFigure"
+            name="Remove Figure">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="ru.spb.nkurasov.figure.editor.ui.definition.figureActivated">
+         <with
+               variable="activeFigure">
+            <instanceof
+                  value="ru.spb.nkurasov.figure.editor.Figure">
+            </instanceof>
+         </with>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:ru.spb.nkurasov.figure.editor.ui.view.figures">
+         <toolbar
+               id="ru.spb.nkurasov.figure.editor.ui.toolbar.figuresActions">
+            <command
+                  commandId="ru.spb.nkurasov.figure.editor.ui.command.addFigure"
+                  icon="icons/add.png"
+                  label="Add Figure"
+                  style="push"
+                  tooltip="Add New Figure">
+            </command>
+            <command
+                  commandId="ru.spb.nkurasov.figure.editor.ui.command.removeFigure"
+                  icon="icons/delete.png"
+                  label="Remove Figure"
+                  style="push"
+                  tooltip="Remove Selected Figure">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
 
 </plugin>
