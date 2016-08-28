@@ -63,10 +63,17 @@
       <definition
             id="ru.spb.nkurasov.figure.editor.ui.definition.figureActivated">
          <with
-               variable="activeFigure">
-            <instanceof
-                  value="ru.spb.nkurasov.figure.editor.Figure">
-            </instanceof>
+               variable="activeFigures">
+            <and>
+               <count
+                     value="+">
+               </count>
+               <iterate>
+                  <instanceof
+                        value="ru.spb.nkurasov.figure.editor.Figure">
+                  </instanceof>
+               </iterate>
+            </and>
          </with>
       </definition>
    </extension>

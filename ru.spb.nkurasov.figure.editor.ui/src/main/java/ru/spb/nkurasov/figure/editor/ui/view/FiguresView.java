@@ -3,6 +3,7 @@ package ru.spb.nkurasov.figure.editor.ui.view;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -26,15 +27,18 @@ public class FiguresView extends ViewPart {
 
     private final RemoveFigureListener removeFigureListener = f -> figures.remove(f);
 
+    private FigureService figureService;
+
     @Override
     public void init(IViewSite site) throws PartInitException {
         super.init(site);
 
-        FigureService figureService = (FigureService) site.getService(FigureService.class);
+        figureService = (FigureService) site.getService(FigureService.class);
         figureService.addFigureAddedListener(addFigureListener);
         figureService.addFigureRemovedListener(removeFigureListener);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void createPartControl(Composite parent) {
         TableViewer figuresTable = new TableViewer(parent);
@@ -57,6 +61,10 @@ public class FiguresView extends ViewPart {
         figureTypeColumn.setLabelProvider(new FigureTypeLabelProvider());
 
         figuresTable.setInput(figures);
+        figuresTable.addSelectionChangedListener(e -> {
+            IStructuredSelection selection = (IStructuredSelection) e.getSelection();
+            figureService.setActiveFigures(selection.toList());
+        });
     }
 
     @Override
@@ -68,7 +76,6 @@ public class FiguresView extends ViewPart {
     public void dispose() {
         super.dispose();
 
-        FigureService figureService = (FigureService) getViewSite().getService(FigureService.class);
         figureService.removeFigureAddedListener(addFigureListener);
         figureService.removeFigureRemovedListener(removeFigureListener);
     }

@@ -14,7 +14,7 @@ public class FigureSourceProvider extends AbstractSourceProvider {
 
     private static final String ACTIVE_FIGURES = "activeFigures";
 
-    private final FigureActivationChangedListener activationListener = f -> fireSourceChanged(ISources.WORKBENCH, ACTIVE_FIGURES, f.toArray());
+    private final FigureActivationChangedListener activationListener = f -> fireSourceChanged(ISources.WORKBENCH, ACTIVE_FIGURES, f);
 
     private FigureService figureService;
 
@@ -30,7 +30,7 @@ public class FigureSourceProvider extends AbstractSourceProvider {
     @Override
     public Map getCurrentState() {
         Map<String, Object> currentState = new HashMap<>();
-        currentState.put(ACTIVE_FIGURES, figureService.getActiveFigures().toArray());
+        currentState.put(ACTIVE_FIGURES, figureService.getActiveFigures());
         return currentState;
     }
 
