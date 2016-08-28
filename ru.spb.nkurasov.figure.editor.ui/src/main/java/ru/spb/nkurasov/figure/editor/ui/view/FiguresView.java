@@ -1,8 +1,7 @@
-package ru.spb.nkurasov.figure.editor.ui.views;
+package ru.spb.nkurasov.figure.editor.ui.view;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -22,9 +21,9 @@ public class FiguresView extends ViewPart {
 
     private final WritableList<Figure> figures = WritableList.withElementType(Figure.class);
     
-    private final AddFigureListener addFigureListener = this::figureAdded;
+    private final AddFigureListener addFigureListener = f -> figures.add(f);
     
-    private final RemoveFigureListener removeFigureListener = this::figureRemoved;
+    private final RemoveFigureListener removeFigureListener = f -> figures.remove(f);
 
     @Override
     public void init(IViewSite site) throws PartInitException {
@@ -71,35 +70,5 @@ public class FiguresView extends ViewPart {
         FigureService figureService = (FigureService) getViewSite().getService(FigureService.class);
         figureService.removeFigureAddedListener(addFigureListener);
         figureService.removeFigureRemovedListener(removeFigureListener);
-    }
-
-    private void figureAdded(Figure figure) {
-        figures.add(figure);
-    }
-    
-    private void figureRemoved(Figure figure) {
-        figures.remove(figure);
-    }
-
-    private static class FigureNameLabelProvider extends ColumnLabelProvider {
-
-        @Override
-        public String getText(Object element) {
-            if (element instanceof Figure) {
-                return ((Figure) element).getName();
-            }
-            return super.getText(element);
-        }
-    }
-
-    private static class FigureTypeLabelProvider extends ColumnLabelProvider {
-
-        @Override
-        public String getText(Object element) {
-            if (element instanceof Figure) {
-                return ((Figure) element).getType().getName();
-            }
-            return super.getText(element);
-        }
     }
 }

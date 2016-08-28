@@ -7,7 +7,6 @@ import org.eclipse.ui.AbstractSourceProvider;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.services.IServiceLocator;
 
-import ru.spb.nkurasov.figure.editor.Figure;
 import ru.spb.nkurasov.figure.editor.service.FigureActivationChangedListener;
 import ru.spb.nkurasov.figure.editor.service.FigureService;
 
@@ -15,7 +14,7 @@ public class FigureSourceProvider extends AbstractSourceProvider {
 
     private static final String ACTIVE_FIGURE = "activeFigure";
 
-    private final FigureActivationChangedListener activationListener = this::onFigureActivated;
+    private final FigureActivationChangedListener activationListener = f -> fireSourceChanged(ISources.WORKBENCH, ACTIVE_FIGURE, f);
 
     private FigureService figureService;
 
@@ -44,9 +43,5 @@ public class FigureSourceProvider extends AbstractSourceProvider {
     public void dispose() {
         figureService.removeFigureActivationChangedListener(activationListener);
         figureService = null;
-    }
-
-    private void onFigureActivated(Figure figure) {
-        fireSourceChanged(ISources.WORKBENCH, ACTIVE_FIGURE, figure);
     }
 }

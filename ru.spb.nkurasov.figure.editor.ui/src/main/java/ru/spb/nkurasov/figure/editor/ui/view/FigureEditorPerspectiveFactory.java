@@ -1,4 +1,4 @@
-package ru.spb.nkurasov.figure.editor.ui.views;
+package ru.spb.nkurasov.figure.editor.ui.view;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;

@@ -1,4 +1,4 @@
-package ru.spb.nkurasov.figure.editor.ui.views;
+package ru.spb.nkurasov.figure.editor.ui.view;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;

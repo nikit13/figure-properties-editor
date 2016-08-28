@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="ru.spb.nkurasov.figure.editor.ui.views.FigureEditorPerspectiveFactory"
+            class="ru.spb.nkurasov.figure.editor.ui.view.FigureEditorPerspectiveFactory"
             id="ru.spb.nkurasov.figure.editor.ui.perspective"
             name="Figure Editor">
       </perspective>
@@ -12,14 +12,14 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="ru.spb.nkurasov.figure.editor.ui.views.FiguresView"
+            class="ru.spb.nkurasov.figure.editor.ui.view.FiguresView"
             icon="icons/shapes.png"
             id="ru.spb.nkurasov.figure.editor.ui.view.figures"
             name="Figures"
             restorable="true">
       </view>
       <view
-            class="ru.spb.nkurasov.figure.editor.ui.views.FigurePropertiesView"
+            class="ru.spb.nkurasov.figure.editor.ui.view.FigurePropertiesView"
             id="ru.spb.nkurasov.figure.editor.ui.view.properties"
             name="Figure Properties"
             restorable="true">
@@ -28,11 +28,11 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="ru.spb.nkurasov.figure.editor.ui.actions.AddFigureHandler"
+            class="ru.spb.nkurasov.figure.editor.ui.action.AddFigureHandler"
             commandId="ru.spb.nkurasov.figure.editor.ui.command.addFigure">
       </handler>
       <handler
-            class="ru.spb.nkurasov.figure.editor.ui.actions.RemoveFigureHandler"
+            class="ru.spb.nkurasov.figure.editor.ui.action.RemoveFigureHandler"
             commandId="ru.spb.nkurasov.figure.editor.ui.command.removeFigure">
          <enabledWhen>
             <reference
