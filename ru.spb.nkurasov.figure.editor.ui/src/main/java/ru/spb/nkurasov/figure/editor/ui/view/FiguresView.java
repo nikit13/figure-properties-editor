@@ -2,6 +2,7 @@ package ru.spb.nkurasov.figure.editor.ui.view;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -20,16 +21,16 @@ public class FiguresView extends ViewPart {
     public static final String ID = "ru.spb.nkurasov.figure.editor.ui.view.figures";
 
     private final WritableList<Figure> figures = WritableList.withElementType(Figure.class);
-    
+
     private final AddFigureListener addFigureListener = f -> figures.add(f);
-    
+
     private final RemoveFigureListener removeFigureListener = f -> figures.remove(f);
 
     @Override
     public void init(IViewSite site) throws PartInitException {
         super.init(site);
 
-        FigureService figureService = (FigureService) getViewSite().getService(FigureService.class);
+        FigureService figureService = (FigureService) site.getService(FigureService.class);
         figureService.addFigureAddedListener(addFigureListener);
         figureService.addFigureRemovedListener(removeFigureListener);
     }
@@ -54,7 +55,7 @@ public class FiguresView extends ViewPart {
         figureTypeColumn.getColumn().setWidth(100);
         figureTypeColumn.getColumn().setMoveable(false);
         figureTypeColumn.setLabelProvider(new FigureTypeLabelProvider());
-        
+
         figuresTable.setInput(figures);
     }
 
@@ -62,13 +63,35 @@ public class FiguresView extends ViewPart {
     public void setFocus() {
         // do nothing
     }
-    
+
     @Override
     public void dispose() {
         super.dispose();
-        
+
         FigureService figureService = (FigureService) getViewSite().getService(FigureService.class);
         figureService.removeFigureAddedListener(addFigureListener);
         figureService.removeFigureRemovedListener(removeFigureListener);
+    }
+
+    private static class FigureNameLabelProvider extends ColumnLabelProvider {
+
+        @Override
+        public String getText(Object element) {
+            if (element instanceof Figure) {
+                return ((Figure) element).getName();
+            }
+            return super.getText(element);
+        }
+    }
+
+    private static class FigureTypeLabelProvider extends ColumnLabelProvider {
+
+        @Override
+        public String getText(Object element) {
+            if (element instanceof Figure) {
+                return ((Figure) element).getType().getName();
+            }
+            return super.getText(element);
+        }
     }
 }

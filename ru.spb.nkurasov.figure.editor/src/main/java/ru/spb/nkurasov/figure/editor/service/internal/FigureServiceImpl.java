@@ -65,7 +65,7 @@ class FigureServiceImpl implements FigureService {
                 throw new IllegalStateException("figure not registered");
             }
         }
-        
+
         this.activeFigures.clear();
         this.activeFigures.addAll(figures);
         fireFigureActivationChanged(Collections.unmodifiableList(activeFigures));
@@ -129,7 +129,7 @@ class FigureServiceImpl implements FigureService {
         }
     }
 
-    private void fireFigureActivationChanged(Collection<? extends Figure> figures) {
+    private void fireFigureActivationChanged(List<? extends Figure> figures) {
         for (FigureActivationChangedListener l : activationListeners) {
             l.onFigureActivationChanged(figures);
         }
