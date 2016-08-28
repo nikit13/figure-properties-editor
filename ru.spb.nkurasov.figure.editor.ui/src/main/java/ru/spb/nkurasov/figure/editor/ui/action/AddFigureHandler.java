@@ -1,7 +1,7 @@
 package ru.spb.nkurasov.figure.editor.ui.action;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -18,6 +18,7 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -49,7 +50,7 @@ public class AddFigureHandler extends AbstractHandler {
 
     private static class AddFigureDialog extends TitleAreaDialog {
 
-        private final Collection<FigureType> availableTypes;
+        private final List<FigureType> availableTypes;
 
         private final WritableValue<String> figureName = WritableValue.withValueType(String.class);
 
@@ -57,10 +58,10 @@ public class AddFigureHandler extends AbstractHandler {
 
         private final DataBindingContext context = new DataBindingContext();
 
-        public AddFigureDialog(Shell parentShell, Collection<? extends FigureType> figureTypes) {
+        public AddFigureDialog(Shell parentShell, List<? extends FigureType> figureTypes) {
             super(parentShell);
 
-            this.availableTypes = Collections.unmodifiableCollection(figureTypes);
+            this.availableTypes = Collections.unmodifiableList(figureTypes);
         }
 
         @Override
@@ -105,6 +106,10 @@ public class AddFigureHandler extends AbstractHandler {
             context.bindValue(targetType, figureType, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy<>(
                     UpdateValueStrategy.POLICY_NEVER));
 
+            if (!availableTypes.isEmpty()) {
+                typeCombo.setSelection(new StructuredSelection(availableTypes.get(0)));
+            }
+            
             return control;
         }
 
