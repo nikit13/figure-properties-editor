@@ -3,9 +3,7 @@ package ru.spb.nkurasov.figure;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
@@ -21,11 +19,10 @@ public class FigureTypes {
         }
 
         List<FigureType> figures = new ArrayList<>();
-        Set<String> figureNames = new HashSet<String>();
         for (IConfigurationElement element : figureElements) {
             if (isFigure(element)) {
                 String figureName = element.getAttribute("name");
-                if (!figureNames.add(figureName)) {
+                if (figures.stream().map(FigureType::getName).filter(figureName::equals).findAny().isPresent()) {
                     throw new ReadFigureException("name of figure type must be unique - " + figureName);
                 }
                 Collection<FigurePropertyType> figureProperties = readProperties(element.getChildren());

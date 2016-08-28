@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ru.spb.nkurasov.figure.FigureType;
+import ru.spb.nkurasov.figure.FigureTypes;
 import ru.spb.nkurasov.figure.editor.Figure;
 import ru.spb.nkurasov.figure.editor.service.AddFigureListener;
 import ru.spb.nkurasov.figure.editor.service.FigureActivationChangedListener;
@@ -133,5 +135,10 @@ class FigureServiceImpl implements FigureService {
         for (FigureActivationChangedListener l : activationListeners) {
             l.onFigureActivationChanged(figures);
         }
+    }
+
+    @Override
+    public List<FigureType> getAvailableTypes() {
+        return FigureTypes.read();
     }
 }
