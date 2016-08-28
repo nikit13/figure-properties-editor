@@ -75,23 +75,47 @@
       <menuContribution
             allPopups="false"
             locationURI="toolbar:ru.spb.nkurasov.figure.editor.ui.view.figures">
-         <toolbar
-               id="ru.spb.nkurasov.figure.editor.ui.toolbar.figuresActions">
+         <command
+              commandId="ru.spb.nkurasov.figure.editor.ui.command.addFigure"
+              icon="icons/add.png"
+              label="Add Figure"
+              style="push"
+              tooltip="Add New Figure">
+        </command>
+        <command
+              commandId="ru.spb.nkurasov.figure.editor.ui.command.removeFigure"
+              icon="icons/delete.png"
+              label="Remove Figure"
+              style="push"
+              tooltip="Remove Selected Figure">
+        </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="File">
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="Model">
             <command
                   commandId="ru.spb.nkurasov.figure.editor.ui.command.addFigure"
                   icon="icons/add.png"
                   label="Add Figure"
-                  style="push"
-                  tooltip="Add New Figure">
+                  style="push">
             </command>
             <command
                   commandId="ru.spb.nkurasov.figure.editor.ui.command.removeFigure"
                   icon="icons/delete.png"
                   label="Remove Figure"
-                  style="push"
-                  tooltip="Remove Selected Figure">
+                  style="push">
             </command>
-         </toolbar>
+         </menu>
       </menuContribution>
    </extension>
 
