@@ -46,6 +46,9 @@ class FigureServiceImpl implements FigureService {
 
         final boolean result = figures.remove(figure);
         if (result) {
+            if (activeFigure.filter(figure::equals).isPresent()) {
+                setActiveFigure(null);
+            }
             fireFigureRemoved(figure);
         }
         return result;
