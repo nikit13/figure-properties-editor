@@ -16,7 +16,7 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
         }
 
         // TODO add range checks
-        
+
         this.defaultValue = defaultValue;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -29,6 +29,10 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
 
     public Integer getDefaultValue() {
         return defaultValue;
+    }
+
+    public boolean hasDefaultValue() {
+        return defaultValue != null;
     }
 
     public Integer getMinValue() {

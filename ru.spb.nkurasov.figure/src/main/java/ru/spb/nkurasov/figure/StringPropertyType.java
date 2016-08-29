@@ -18,4 +18,8 @@ public class StringPropertyType extends AbstractFigurePropertyType {
     public String getDefaultValue() {
         return defaultValue;
     }
+
+    public boolean hasDefaultValue() {
+        return defaultValue != null;
+    }
 }

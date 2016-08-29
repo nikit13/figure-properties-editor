@@ -1,5 +1,7 @@
 package ru.spb.nkurasov.figure.editor;
 
+import java.util.Optional;
+
 import ru.spb.nkurasov.figure.BooleanPropertyType;
 import ru.spb.nkurasov.figure.FigurePropertyType;
 
@@ -7,17 +9,14 @@ public class BooleanProperty implements FigureProperty {
 
     private final BooleanPropertyType type;
 
-    private Boolean value;
+    private Optional<Boolean> value;
 
     public BooleanProperty(BooleanPropertyType type) {
         if (type == null) {
             throw new IllegalArgumentException("property type is null");
         }
         this.type = type;
-
-        if (type.hasDefaultValue()) {
-            this.value = type.getDefaultValue();
-        }
+        this.value = Optional.ofNullable(type.getDefaultValue());
     }
 
     @Override
@@ -25,11 +24,11 @@ public class BooleanProperty implements FigureProperty {
         return type;
     }
 
-    public Boolean getValue() {
+    public Optional<Boolean> getValue() {
         return value;
     }
 
     public void setValue(Boolean value) {
-        this.value = value;
+        this.value = Optional.ofNullable(value);
     }
 }
