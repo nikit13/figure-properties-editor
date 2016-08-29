@@ -131,13 +131,13 @@
             commandId="ru.spb.nkurasov.figure.editor.ui.command.addFigure"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="SHIFT+ALT+A">
+            sequence="SHIFT+A">
       </key>
       <key
             commandId="ru.spb.nkurasov.figure.editor.ui.command.removeFigure"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="SHIFT+ALT+E">
+            sequence="SHIFT+R">
       </key>
    </extension>
 
