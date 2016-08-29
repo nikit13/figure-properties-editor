@@ -2,4 +2,26 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="ru.spb.nkurasov.figure" name="Figure Definition" schema="schema/ru.spb.nkurasov.figure.exsd"/>
+   <extension
+         point="ru.spb.nkurasov.figure">
+      <figure
+            name="Oval">
+         <booleanProperty
+               defaultValue="true"
+               name="visible">
+         </booleanProperty>
+         <integerProperty
+               boundedAbove="false"
+               boundedBelow="false"
+               defaultValue="0"
+               name="X">
+         </integerProperty>
+         <integerProperty
+               boundedAbove="false"
+               boundedBelow="false"
+               defaultValue="0"
+               name="Y">
+         </integerProperty>
+      </figure>
+   </extension>
 </plugin>

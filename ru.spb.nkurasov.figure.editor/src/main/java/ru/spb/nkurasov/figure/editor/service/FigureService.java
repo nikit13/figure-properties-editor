@@ -10,7 +10,7 @@ public interface FigureService {
 
     void addFigure(Figure figure);
 
-    boolean removeFigure(Figure figure);
+    boolean removeFigures(Collection<? extends Figure> figures);
 
     Collection<Figure> getFigures();
 

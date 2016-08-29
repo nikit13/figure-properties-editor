@@ -3,7 +3,9 @@ package ru.spb.nkurasov.figure.editor.ui.view;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -25,7 +27,7 @@ public class FiguresView extends ViewPart {
 
     private final AddFigureListener addFigureListener = f -> figures.add(f);
 
-    private final RemoveFigureListener removeFigureListener = f -> figures.remove(f);
+    private final RemoveFigureListener removeFigureListener = f -> figures.removeAll(f);
 
     private FigureService figureService;
 
@@ -38,7 +40,6 @@ public class FiguresView extends ViewPart {
         figureService.addFigureRemovedListener(removeFigureListener);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void createPartControl(Composite parent) {
         TableViewer figuresTable = new TableViewer(parent);
@@ -61,9 +62,14 @@ public class FiguresView extends ViewPart {
         figureTypeColumn.setLabelProvider(new FigureTypeLabelProvider());
 
         figuresTable.setInput(figures);
-        figuresTable.addSelectionChangedListener(e -> {
-            IStructuredSelection selection = (IStructuredSelection) e.getSelection();
-            figureService.setActiveFigures(selection.toList());
+        figuresTable.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                figureService.setActiveFigures(selection.toList());
+            }
         });
     }
 

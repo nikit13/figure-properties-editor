@@ -40,34 +40,25 @@ class FigureServiceImpl implements FigureService {
     }
 
     @Override
-    public boolean removeFigure(Figure figure) {
-        if (figure == null) {
-            throw new IllegalArgumentException("figure is null");
+    public boolean removeFigures(Collection<? extends Figure> figures) {
+        if (figures == null) {
+            throw new IllegalArgumentException("figures list is null");
         }
 
-        final boolean result = figures.remove(figure);
+        final boolean result = this.figures.removeAll(figures);
         if (result) {
-            if (activeFigures.remove(figure)) {
-                fireFigureActivationChanged(Collections.unmodifiableList(activeFigures));
-            }
-            fireFigureRemoved(figure);
+            fireFiguresRemoved(figures);
         }
         return result;
     }
 
     @Override
     public Collection<Figure> getFigures() {
-        return Collections.unmodifiableList(figures);
+        return new ArrayList<>(figures);
     }
 
     @Override
     public void setActiveFigures(Collection<? extends Figure> figures) {
-        for (Figure figure : figures) {
-            if (!this.figures.contains(figure)) {
-                throw new IllegalStateException("figure not registered");
-            }
-        }
-
         this.activeFigures.clear();
         this.activeFigures.addAll(figures);
         fireFigureActivationChanged(Collections.unmodifiableList(activeFigures));
@@ -125,9 +116,9 @@ class FigureServiceImpl implements FigureService {
         }
     }
 
-    private void fireFigureRemoved(Figure figure) {
+    private void fireFiguresRemoved(Collection<? extends Figure> figures) {
         for (RemoveFigureListener l : removeListeners) {
-            l.onFigureRemoved(figure);
+            l.onFigureRemoved(figures);
         }
     }
 
