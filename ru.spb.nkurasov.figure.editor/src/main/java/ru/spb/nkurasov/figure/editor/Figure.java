@@ -19,7 +19,7 @@ import ru.spb.nkurasov.figure.StringPropertyType;
  * @author nkurasov
  *
  */
-public class Figure {
+public final class Figure {
 
     private final String name;
 

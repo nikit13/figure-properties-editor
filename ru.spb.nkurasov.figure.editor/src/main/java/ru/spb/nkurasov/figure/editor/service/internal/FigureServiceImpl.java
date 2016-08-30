@@ -11,7 +11,7 @@ import ru.spb.nkurasov.figure.FigureType;
 import ru.spb.nkurasov.figure.FigureTypes;
 import ru.spb.nkurasov.figure.editor.Figure;
 import ru.spb.nkurasov.figure.editor.service.AddFigureListener;
-import ru.spb.nkurasov.figure.editor.service.FigureActivationChangedListener;
+import ru.spb.nkurasov.figure.editor.service.FigureSelectionChangedListener;
 import ru.spb.nkurasov.figure.editor.service.FigureService;
 import ru.spb.nkurasov.figure.editor.service.RemoveFigureListener;
 
@@ -19,13 +19,13 @@ class FigureServiceImpl implements FigureService {
 
     private final List<Figure> figures = new ArrayList<Figure>();
 
-    private List<Figure> activeFigures = new ArrayList<Figure>();
+    private List<Figure> selectedFigures = new ArrayList<Figure>();
 
     private final Set<AddFigureListener> addListeners = new HashSet<>();
 
     private final Set<RemoveFigureListener> removeListeners = new HashSet<>();
 
-    private final Set<FigureActivationChangedListener> activationListeners = new HashSet<>();
+    private final Set<FigureSelectionChangedListener> activationListeners = new HashSet<>();
 
     FigureServiceImpl() {
     }
@@ -58,20 +58,20 @@ class FigureServiceImpl implements FigureService {
     }
 
     @Override
-    public void setActiveFigures(Collection<? extends Figure> figures) {
-        this.activeFigures.clear();
-        this.activeFigures.addAll(figures);
-        fireFigureActivationChanged(Collections.unmodifiableList(activeFigures));
+    public void setSelectedFigures(Collection<? extends Figure> figures) {
+        this.selectedFigures.clear();
+        this.selectedFigures.addAll(figures);
+        fireFigureActivationChanged(Collections.unmodifiableList(selectedFigures));
     }
 
     @Override
-    public List<Figure> getActiveFigures() {
-        return Collections.unmodifiableList(activeFigures);
+    public List<Figure> getSelectedFigures() {
+        return Collections.unmodifiableList(selectedFigures);
     }
 
     @Override
-    public boolean isFigureActivated() {
-        return !activeFigures.isEmpty();
+    public boolean isFigureSelected() {
+        return !selectedFigures.isEmpty();
     }
 
     @Override
@@ -99,14 +99,14 @@ class FigureServiceImpl implements FigureService {
     }
 
     @Override
-    public void addFigureActivationChangedListener(FigureActivationChangedListener l) {
+    public void addFigureActivationChangedListener(FigureSelectionChangedListener l) {
         if (l != null) {
             activationListeners.add(l);
         }
     }
 
     @Override
-    public boolean removeFigureActivationChangedListener(FigureActivationChangedListener l) {
+    public boolean removeFigureActivationChangedListener(FigureSelectionChangedListener l) {
         return l != null && activationListeners.remove(l);
     }
 
@@ -123,7 +123,7 @@ class FigureServiceImpl implements FigureService {
     }
 
     private void fireFigureActivationChanged(List<? extends Figure> figures) {
-        for (FigureActivationChangedListener l : activationListeners) {
+        for (FigureSelectionChangedListener l : activationListeners) {
             l.onFigureActivationChanged(figures);
         }
     }

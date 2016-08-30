@@ -15,7 +15,7 @@ public class RemoveFigureHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         FigureService figureService = (FigureService) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getService(FigureService.class);
-        List<Figure> activeFigures = figureService.getActiveFigures();
+        List<Figure> activeFigures = figureService.getSelectedFigures();
         figureService.removeFigures(activeFigures);
         return null;
     }

@@ -19,6 +19,13 @@ import ru.spb.nkurasov.figure.editor.service.AddFigureListener;
 import ru.spb.nkurasov.figure.editor.service.FigureService;
 import ru.spb.nkurasov.figure.editor.service.RemoveFigureListener;
 
+/**
+ * Окно со списком фигур. Не сохраняет созданные фигуры между запусками
+ * приложения
+ * 
+ * @author nkurasov
+ *
+ */
 public class FiguresView extends ViewPart {
 
     public static final String ID = "ru.spb.nkurasov.figure.editor.ui.view.figures";
@@ -68,7 +75,7 @@ public class FiguresView extends ViewPart {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                figureService.setActiveFigures(selection.toList());
+                figureService.setSelectedFigures(selection.toList());
             }
         });
     }

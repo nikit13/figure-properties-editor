@@ -5,6 +5,12 @@ import ru.spb.nkurasov.figure.editor.FigurePropertyVisitor;
 import ru.spb.nkurasov.figure.editor.IntegerProperty;
 import ru.spb.nkurasov.figure.editor.StringProperty;
 
+/**
+ * Акцессор значения свойства. Преобразует значение свойства в строку
+ * 
+ * @author nkurasov
+ *
+ */
 public class FigurePropertyValueGetter implements FigurePropertyVisitor {
 
     private String propertyValue;

@@ -14,16 +14,23 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import ru.spb.nkurasov.figure.editor.FigureProperty;
-import ru.spb.nkurasov.figure.editor.service.FigureActivationChangedListener;
+import ru.spb.nkurasov.figure.editor.service.FigureSelectionChangedListener;
 import ru.spb.nkurasov.figure.editor.service.FigureService;
 
+/**
+ * Окно отображения свойств выбранной фигуры. Если фигура не выбрана, окно будет
+ * пустым
+ * 
+ * @author nkurasov
+ *
+ */
 public class FigurePropertiesView extends ViewPart {
 
     public static final String ID = "ru.spb.nkurasov.figure.editor.ui.view.properties";
 
     private final WritableList<FigureProperty> selectedFigureProperties = WritableList.withElementType(FigureProperty.class);
 
-    private final FigureActivationChangedListener activationListener = f -> {
+    private final FigureSelectionChangedListener activationListener = f -> {
         selectedFigureProperties.clear();
         selectedFigureProperties.addAll(f.isEmpty() ? Collections.emptyList() : f.get(0).getProperties());
     };

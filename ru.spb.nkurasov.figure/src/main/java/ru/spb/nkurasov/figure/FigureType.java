@@ -6,6 +6,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Тип фигуры. Имеет имя и список свойств
+ * 
+ * @author nkurasov
+ *
+ */
 public final class FigureType {
 
     private final String name;

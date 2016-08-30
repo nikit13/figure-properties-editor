@@ -6,6 +6,12 @@ import java.util.List;
 import ru.spb.nkurasov.figure.FigureType;
 import ru.spb.nkurasov.figure.editor.Figure;
 
+/**
+ * Определяет основные действия, доступные в редакторе свойств фигур
+ * 
+ * @author nkurasov
+ *
+ */
 public interface FigureService {
 
     void addFigure(Figure figure);
@@ -14,13 +20,13 @@ public interface FigureService {
 
     Collection<Figure> getFigures();
 
-    void setActiveFigures(Collection<? extends Figure> figures);
+    void setSelectedFigures(Collection<? extends Figure> figures);
 
-    List<Figure> getActiveFigures();
+    List<Figure> getSelectedFigures();
 
     List<FigureType> getAvailableTypes();
 
-    boolean isFigureActivated();
+    boolean isFigureSelected();
 
     void addFigureAddedListener(AddFigureListener l);
 
@@ -30,8 +36,8 @@ public interface FigureService {
 
     boolean removeFigureRemovedListener(RemoveFigureListener l);
 
-    void addFigureActivationChangedListener(FigureActivationChangedListener l);
+    void addFigureActivationChangedListener(FigureSelectionChangedListener l);
 
-    boolean removeFigureActivationChangedListener(FigureActivationChangedListener l);
+    boolean removeFigureActivationChangedListener(FigureSelectionChangedListener l);
 
 }

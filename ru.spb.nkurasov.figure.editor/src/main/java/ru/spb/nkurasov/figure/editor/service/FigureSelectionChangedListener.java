@@ -5,7 +5,7 @@ import java.util.List;
 import ru.spb.nkurasov.figure.editor.Figure;
 
 @FunctionalInterface
-public interface FigureActivationChangedListener {
+public interface FigureSelectionChangedListener {
 
     void onFigureActivationChanged(List<? extends Figure> activeFigures);
     

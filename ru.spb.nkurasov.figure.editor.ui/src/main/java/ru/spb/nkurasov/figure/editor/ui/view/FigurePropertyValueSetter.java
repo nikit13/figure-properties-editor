@@ -5,6 +5,12 @@ import ru.spb.nkurasov.figure.editor.FigurePropertyVisitor;
 import ru.spb.nkurasov.figure.editor.IntegerProperty;
 import ru.spb.nkurasov.figure.editor.StringProperty;
 
+/**
+ * Мутатор для значения свойства
+ * 
+ * @author nkurasov
+ *
+ */
 public class FigurePropertyValueSetter implements FigurePropertyVisitor {
 
     private final Object value;

@@ -7,14 +7,14 @@ import org.eclipse.ui.AbstractSourceProvider;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.services.IServiceLocator;
 
-import ru.spb.nkurasov.figure.editor.service.FigureActivationChangedListener;
+import ru.spb.nkurasov.figure.editor.service.FigureSelectionChangedListener;
 import ru.spb.nkurasov.figure.editor.service.FigureService;
 
 public class FigureSourceProvider extends AbstractSourceProvider {
 
     private static final String ACTIVE_FIGURES = "activeFigures";
 
-    private final FigureActivationChangedListener activationListener = f -> fireSourceChanged(ISources.WORKBENCH, ACTIVE_FIGURES, f);
+    private final FigureSelectionChangedListener activationListener = f -> fireSourceChanged(ISources.WORKBENCH, ACTIVE_FIGURES, f);
 
     private FigureService figureService;
 
@@ -30,7 +30,7 @@ public class FigureSourceProvider extends AbstractSourceProvider {
     @Override
     public Map getCurrentState() {
         Map<String, Object> currentState = new HashMap<>();
-        currentState.put(ACTIVE_FIGURES, figureService.getActiveFigures());
+        currentState.put(ACTIVE_FIGURES, figureService.getSelectedFigures());
         return currentState;
     }
 

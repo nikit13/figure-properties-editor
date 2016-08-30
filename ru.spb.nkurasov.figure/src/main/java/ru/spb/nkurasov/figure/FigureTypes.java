@@ -8,6 +8,12 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
+/**
+ * Предосталяет методы для загрузки возможных типов фигур
+ * 
+ * @author nkurasov
+ *
+ */
 public class FigureTypes {
 
     private static final String FIGURE_EXTENSION_ID = "ru.spb.nkurasov.figure";
@@ -23,7 +29,7 @@ public class FigureTypes {
             if (isFigure(element)) {
                 String figureName = element.getAttribute("name");
                 if (figures.stream().map(FigureType::getName).filter(figureName::equals).findAny().isPresent()) {
-                    throw new ReadFigureException("name of figure type must be unique - " + figureName);
+                    throw new ReadFigureTypeException("name of figure type must be unique - " + figureName);
                 }
                 Collection<FigurePropertyType> figureProperties = readProperties(element.getChildren());
                 figures.add(new FigureType(figureName, figureProperties));
@@ -60,14 +66,13 @@ public class FigureTypes {
             boolean boundedAbove = Boolean.valueOf(property.getAttribute("boundedAbove"));
             String minValue = property.getAttribute("minValue");
             String maxValue = property.getAttribute("maxValue");
-            return new IntegerPropertyType(propertyName, 
-                    defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue),
-                    !boundedBelow || minValue == null || minValue.isEmpty() ? null : Integer.valueOf(minValue), 
-                    !boundedAbove || maxValue == null || maxValue.isEmpty() ? null : Integer.valueOf(maxValue));
+            return new IntegerPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue),
+                    !boundedBelow || minValue == null || minValue.isEmpty() ? null : Integer.valueOf(minValue), !boundedAbove || maxValue == null
+                            || maxValue.isEmpty() ? null : Integer.valueOf(maxValue));
         case "groupProperty":
             return new GroupPropertyType(propertyName, readProperties(property.getChildren()));
         default:
-            throw new ReadFigureException("unknown property type");
+            throw new ReadFigureTypeException("unknown property type");
         }
     }
 
