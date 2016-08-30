@@ -66,12 +66,12 @@ public class FigurePropertiesView extends ViewPart {
         propertyValueColumn.getColumn().setWidth(100);
         propertyValueColumn.setLabelProvider(new PropertyValueLabelProvider());
 
-        propertyValueColumn.setEditingSupport(new FigurePropertyEditingSupport(propertiesTable, this::onErrorEditingProperty));
+        propertyValueColumn.setEditingSupport(new FigurePropertyEditingSupport(propertiesTable, this::onEditProperty));
 
         propertiesTable.setInput(selectedFigureProperties);
     }
 
-    private void onErrorEditingProperty(FigureProperty property, IStatus editingStatus) {
+    private void onEditProperty(FigureProperty property, IStatus editingStatus) {
         IStatusLineManager statusLineManager = getStatusLineManager();
         statusLineManager.setErrorMessage(null);
         switch (editingStatus.getSeverity()) {
