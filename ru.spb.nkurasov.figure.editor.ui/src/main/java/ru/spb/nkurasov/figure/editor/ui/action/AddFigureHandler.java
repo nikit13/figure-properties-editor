@@ -6,9 +6,15 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.observable.value.ComputedValue;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.databinding.dialog.TitleAreaDialogSupport;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.IViewerObservableValue;
@@ -23,6 +29,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -89,8 +96,9 @@ public class AddFigureHandler extends AbstractHandler {
             nameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
             ISWTObservableValue<String> targetName = WidgetProperties.textText(SWT.Modify).observe(nameText);
-            context.bindValue(targetName, figureName, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy<>(
-                    UpdateValueStrategy.POLICY_NEVER));
+            UpdateValueStrategy<String, String> figureNameStrategy = new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE);
+            figureNameStrategy.setAfterGetValidator(this::validateFigureName);
+            context.bindValue(targetName, figureName, figureNameStrategy, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_NEVER));
 
             Label typeLabel = new Label(container, SWT.NONE);
             typeLabel.setText("Figure Type:");
@@ -103,14 +111,43 @@ public class AddFigureHandler extends AbstractHandler {
             typeCombo.setInput(availableTypes);
 
             IViewerObservableValue<Viewer> targetType = ViewerProperties.singleSelection().observe(typeCombo);
-            context.bindValue(targetType, figureType, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy<>(
-                    UpdateValueStrategy.POLICY_NEVER));
-
+            UpdateValueStrategy<Object, FigureType> figureTypeStrategy = new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE);
+            figureTypeStrategy.setAfterConvertValidator(this::validateFigureType);
+            context.bindValue(targetType, figureType, figureTypeStrategy, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_NEVER));
             if (!availableTypes.isEmpty()) {
                 typeCombo.setSelection(new StructuredSelection(availableTypes.get(0)));
             }
-            
+
+            TitleAreaDialogSupport.create(this, context);
+
             return control;
+        }
+
+        private IStatus validateFigureName(String figureName) {
+            return figureName != null && !figureName.isEmpty() ? ValidationStatus.ok() : ValidationStatus.error("figure name must not be empty");
+        }
+
+        private IStatus validateFigureType(FigureType type) {
+            return type != null ? ValidationStatus.ok() : ValidationStatus.error("figure type is null");
+        }
+
+        @Override
+        protected void createButtonsForButtonBar(Composite parent) {
+            super.createButtonsForButtonBar(parent);
+
+            Button okButton = getButton(OK);
+            AggregateValidationStatus validationStatus = new AggregateValidationStatus(context.getBindings(), AggregateValidationStatus.MAX_SEVERITY);
+
+            IObservableValue<Boolean> validationOk = new ComputedValue<Boolean>() {
+
+                @Override
+                protected Boolean calculate() {
+                    return validationStatus.getValue().isOK();
+                }
+            };
+            ISWTObservableValue<Boolean> buttonEnablement = WidgetProperties.enabledControl().observe(okButton);
+            context.bindValue(validationOk, buttonEnablement, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE),
+                    new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_NEVER));
         }
 
         public Figure createFigure() {
