@@ -3,6 +3,8 @@ package ru.spb.nkurasov.figure.editor.ui.view;
 import java.util.Collections;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -63,9 +65,32 @@ public class FigurePropertiesView extends ViewPart {
         propertyValueColumn.getColumn().setToolTipText("Property Value");
         propertyValueColumn.getColumn().setWidth(100);
         propertyValueColumn.setLabelProvider(new PropertyValueLabelProvider());
-        propertyValueColumn.setEditingSupport(new FigurePropertyEditingSupport(propertiesTable));
+
+        propertyValueColumn.setEditingSupport(new FigurePropertyEditingSupport(propertiesTable, this::onErrorEditingProperty));
 
         propertiesTable.setInput(selectedFigureProperties);
+    }
+
+    private void onErrorEditingProperty(FigureProperty property, IStatus editingStatus) {
+        IStatusLineManager statusLineManager = getStatusLineManager();
+        statusLineManager.setErrorMessage(null);
+        switch (editingStatus.getSeverity()) {
+        case IStatus.OK:
+            statusLineManager.setMessage(editingStatus.getMessage());
+            break;
+        case IStatus.CANCEL:
+            statusLineManager.setMessage(editingStatus.getMessage());
+            break;
+        case IStatus.ERROR:
+            statusLineManager.setErrorMessage(editingStatus.getMessage());
+            break;
+        default:
+            break;
+        }
+    }
+
+    private IStatusLineManager getStatusLineManager() {
+        return getViewSite().getActionBars().getStatusLineManager();
     }
 
     @Override

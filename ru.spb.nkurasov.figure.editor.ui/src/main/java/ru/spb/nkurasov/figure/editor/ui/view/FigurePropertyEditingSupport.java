@@ -1,9 +1,11 @@
 package ru.spb.nkurasov.figure.editor.ui.view;
 
+import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.ICellEditorListener;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,14 +28,21 @@ import ru.spb.nkurasov.figure.editor.StringProperty;
  */
 public class FigurePropertyEditingSupport extends EditingSupport {
 
-    public FigurePropertyEditingSupport(ColumnViewer viewer) {
+    private final FigurePropertyEditingCallback errorHandler;
+
+    public FigurePropertyEditingSupport(ColumnViewer viewer, FigurePropertyEditingCallback errorHandler) {
         super(viewer);
+
+        if (errorHandler == null) {
+            throw new IllegalArgumentException();
+        }
+        this.errorHandler = errorHandler;
     }
 
     @Override
     protected CellEditor getCellEditor(Object element) {
         if (element instanceof FigureProperty) {
-            CellEditorBuilder cellEditorCreator = new CellEditorBuilder((Composite) getViewer().getControl());
+            CellEditorBuilder cellEditorCreator = new CellEditorBuilder((Composite) getViewer().getControl(), errorHandler);
             ((FigureProperty) element).accept(cellEditorCreator);
             return cellEditorCreator.getCellEditor();
         }
@@ -78,16 +87,20 @@ public class FigurePropertyEditingSupport extends EditingSupport {
 
         private final Composite parent;
 
+        private final FigurePropertyEditingCallback editingCallback;
+
         private CellEditor cellEditor;
 
-        public CellEditorBuilder(Composite parent) {
+        public CellEditorBuilder(Composite parent, FigurePropertyEditingCallback editingCallback) {
             this.parent = parent;
+            this.editingCallback = editingCallback;
         }
 
         @Override
         public void visit(BooleanProperty property) {
             CheckboxCellEditor editor = new CheckboxCellEditor(parent);
             editor.setValidator(value -> value != null ? null : "value must be specified");
+            editor.addListener(new ReportErrorMessagesCellEditorListener(editor, property, editingCallback));
             cellEditor = editor;
         }
 
@@ -95,6 +108,7 @@ public class FigurePropertyEditingSupport extends EditingSupport {
         public void visit(IntegerProperty property) {
             TextCellEditor editor = new TextCellEditor(parent);
             editor.setValidator(this::validateIntegerValue);
+            editor.addListener(new ReportErrorMessagesCellEditorListener(editor, property, editingCallback));
             cellEditor = editor;
         }
 
@@ -104,7 +118,7 @@ public class FigurePropertyEditingSupport extends EditingSupport {
                     Integer.valueOf(value.toString());
                     return null;
                 } catch (NumberFormatException e) {
-                    return "value is not a number";
+                    return "value " + value + " is not a number";
                 }
             } else {
                 return "null value";
@@ -113,11 +127,47 @@ public class FigurePropertyEditingSupport extends EditingSupport {
 
         @Override
         public void visit(StringProperty property) {
-            cellEditor = new TextCellEditor(parent);
+            TextCellEditor editor = new TextCellEditor(parent);
+            editor.addListener(new ReportErrorMessagesCellEditorListener(editor, property, editingCallback));
+            cellEditor = editor;
         }
 
         public CellEditor getCellEditor() {
             return cellEditor;
+        }
+    }
+
+    private static class ReportErrorMessagesCellEditorListener implements ICellEditorListener {
+
+        private final FigurePropertyEditingCallback editingCallback;
+
+        private final CellEditor editor;
+
+        private final FigureProperty property;
+
+        public ReportErrorMessagesCellEditorListener(CellEditor editor, FigureProperty property, FigurePropertyEditingCallback editingCallback) {
+            this.editor = editor;
+            this.property = property;
+            this.editingCallback = editingCallback;
+        }
+
+        @Override
+        public void applyEditorValue() {
+            if (editor.isValueValid()) {
+                editingCallback.onEditProperty(property, ValidationStatus.ok());
+            } else {
+                editingCallback.onEditProperty(property, ValidationStatus.error(editor.getErrorMessage()));
+            }
+        }
+
+        @Override
+        public void cancelEditor() {
+            editingCallback.onEditProperty(property, ValidationStatus.cancel("editing of property " + property.getName() + " cancelled"));
+        }
+
+        @Override
+        public void editorValueChanged(boolean oldValidState, boolean newValidState) {
+            // do nothing
         }
     }
 
