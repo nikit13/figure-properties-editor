@@ -1,11 +1,9 @@
 package ru.spb.nkurasov.figure.editor.ui.view;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 
@@ -39,9 +37,11 @@ public class FigurePropertyEditingSupport extends EditingSupport {
     @Override
     protected Object getValue(Object element) {
         if (element instanceof FigureProperty) {
-            FigurePropertyValueGetter valueExtractor = new FigurePropertyValueGetter();
-            ((FigureProperty) element).accept(valueExtractor);
-            return valueExtractor.getPropertyValue();
+            FigureProperty property = (FigureProperty) element;
+            FigurePropertyValueGetter valueGetter = new FigurePropertyValueGetter();
+            property.accept(valueGetter);
+            Object propertyValue = valueGetter.getPropertyValue();
+            return propertyValue;
         }
         return null;
     }
@@ -69,11 +69,8 @@ public class FigurePropertyEditingSupport extends EditingSupport {
 
         @Override
         public void visit(BooleanProperty property) {
-            ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor(parent);
-            editor.setLabelProvider(new LabelProvider());
-            editor.setContentProvider(ArrayContentProvider.getInstance());
-            editor.setInput(new Boolean[] { true, false });
-            editor.setValidator(value -> value != null ? null : "Value must be specified");
+            CheckboxCellEditor editor = new CheckboxCellEditor(parent);
+            editor.setValidator(value -> value != null ? null : "value must be specified");
             cellEditor = editor;
         }
 
@@ -83,7 +80,7 @@ public class FigurePropertyEditingSupport extends EditingSupport {
             editor.setValidator(this::validateIntegerValue);
             cellEditor = editor;
         }
-        
+
         private String validateIntegerValue(Object value) {
             if (value instanceof String) {
                 try {
@@ -104,6 +101,42 @@ public class FigurePropertyEditingSupport extends EditingSupport {
 
         public CellEditor getCellEditor() {
             return cellEditor;
+        }
+    }
+
+    private static class FigurePropertyValueGetter implements FigurePropertyVisitor {
+
+        private Object propertyValue;
+
+        @Override
+        public void visit(BooleanProperty property) {
+            property.getValue().ifPresent(this::setBooleanValue);
+        }
+
+        private void setBooleanValue(Boolean value) {
+            propertyValue = value;
+        }
+
+        @Override
+        public void visit(StringProperty property) {
+            property.getValue().ifPresent(this::setStringValue);
+        }
+
+        private void setStringValue(String value) {
+            propertyValue = value;
+        }
+
+        @Override
+        public void visit(IntegerProperty property) {
+            property.getValue().ifPresent(this::setIntegerValue);
+        }
+
+        private void setIntegerValue(Integer value) {
+            propertyValue = value.toString();
+        }
+
+        public Object getPropertyValue() {
+            return propertyValue;
         }
     }
 }

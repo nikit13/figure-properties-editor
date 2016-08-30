@@ -37,6 +37,6 @@ public class FigurePropertyValueGetter implements FigurePropertyVisitor {
     }
 
     public String getPropertyValue() {
-        return propertyValue;
+        return propertyValue.toString();
     }
 }
