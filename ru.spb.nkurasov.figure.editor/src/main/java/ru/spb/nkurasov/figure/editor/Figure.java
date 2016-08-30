@@ -13,6 +13,12 @@ import ru.spb.nkurasov.figure.GroupPropertyType;
 import ru.spb.nkurasov.figure.IntegerPropertyType;
 import ru.spb.nkurasov.figure.StringPropertyType;
 
+/**
+ * Фигура. Имеет имя, тип и список свойств
+ * 
+ * @author nkurasov
+ *
+ */
 public class Figure {
 
     private final String name;
@@ -47,12 +53,12 @@ public class Figure {
     }
 
     private static FigureProperty createPropertyForType(FigurePropertyType type) {
-        PropertyCreator propertyCreator = new PropertyCreator();
-        type.accept(propertyCreator);
-        return propertyCreator.getProperty();
+        PropertyBuilder propertyBuilder = new PropertyBuilder();
+        type.accept(propertyBuilder);
+        return propertyBuilder.getProperty();
     }
 
-    private static class PropertyCreator implements FigurePropertyTypeVisitor {
+    private static class PropertyBuilder implements FigurePropertyTypeVisitor {
 
         private FigureProperty property;
 

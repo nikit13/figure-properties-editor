@@ -13,6 +13,17 @@ import ru.spb.nkurasov.figure.editor.FigurePropertyVisitor;
 import ru.spb.nkurasov.figure.editor.IntegerProperty;
 import ru.spb.nkurasov.figure.editor.StringProperty;
 
+/**
+ * Поддержка редактирования свойств фигур
+ * 
+ * <ul>
+ * <li>Для числовых и строковых свойств используются текстовые редакторы</li>
+ * <li>Для свойств-флагов используются checkbox'ы</li>
+ * </ul>
+ * 
+ * @author nkurasov
+ *
+ */
 public class FigurePropertyEditingSupport extends EditingSupport {
 
     public FigurePropertyEditingSupport(ColumnViewer viewer) {
@@ -22,7 +33,7 @@ public class FigurePropertyEditingSupport extends EditingSupport {
     @Override
     protected CellEditor getCellEditor(Object element) {
         if (element instanceof FigureProperty) {
-            CellEditorCreator cellEditorCreator = new CellEditorCreator((Composite) getViewer().getControl());
+            CellEditorBuilder cellEditorCreator = new CellEditorBuilder((Composite) getViewer().getControl());
             ((FigureProperty) element).accept(cellEditorCreator);
             return cellEditorCreator.getCellEditor();
         }
@@ -57,13 +68,19 @@ public class FigurePropertyEditingSupport extends EditingSupport {
         }
     }
 
-    private static class CellEditorCreator implements FigurePropertyVisitor {
+    /**
+     * Конструктор редакторов ячеек таблицы в зависимости от типа свойства
+     * 
+     * @author nkurasov
+     *
+     */
+    private static class CellEditorBuilder implements FigurePropertyVisitor {
 
         private final Composite parent;
 
         private CellEditor cellEditor;
 
-        public CellEditorCreator(Composite parent) {
+        public CellEditorBuilder(Composite parent) {
             this.parent = parent;
         }
 
@@ -104,6 +121,16 @@ public class FigurePropertyEditingSupport extends EditingSupport {
         }
     }
 
+    /**
+     * Акцессор значения свойства.
+     * 
+     * <p>
+     * Note: числовые свойства преобразуются в текст для отображения в текстовом
+     * поле, и потом обратно в число
+     * 
+     * @author nkurasov
+     *
+     */
     private static class FigurePropertyValueGetter implements FigurePropertyVisitor {
 
         private Object propertyValue;
