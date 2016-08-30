@@ -24,6 +24,11 @@ public class BooleanProperty implements FigureProperty {
         return type;
     }
 
+    @Override
+    public void accept(FigurePropertyVisitor visitor) {
+        visitor.visit(this);
+    }
+
     public Optional<Boolean> getValue() {
         return value;
     }

@@ -24,6 +24,11 @@ public class StringProperty implements FigureProperty {
         return type;
     }
 
+    @Override
+    public void accept(FigurePropertyVisitor visitor) {
+        visitor.visit(this);
+    }
+
     public Optional<String> getValue() {
         return value;
     }

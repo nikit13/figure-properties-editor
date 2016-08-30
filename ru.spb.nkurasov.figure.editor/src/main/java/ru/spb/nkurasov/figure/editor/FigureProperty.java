@@ -6,6 +6,8 @@ public interface FigureProperty {
 
     FigurePropertyType getType();
     
+    void accept(FigurePropertyVisitor visitor);
+
     default String getName() {
         return getType().getName();
     }

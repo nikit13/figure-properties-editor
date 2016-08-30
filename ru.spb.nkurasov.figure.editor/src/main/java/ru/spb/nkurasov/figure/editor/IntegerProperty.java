@@ -24,6 +24,11 @@ public class IntegerProperty implements FigureProperty {
         return type;
     }
 
+    @Override
+    public void accept(FigurePropertyVisitor visitor) {
+        visitor.visit(this);
+    }
+
     public Optional<Integer> getValue() {
         return value;
     }

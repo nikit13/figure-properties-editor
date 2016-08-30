@@ -13,15 +13,7 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
-import ru.spb.nkurasov.figure.BooleanPropertyType;
-import ru.spb.nkurasov.figure.FigurePropertyTypeVisitor;
-import ru.spb.nkurasov.figure.GroupPropertyType;
-import ru.spb.nkurasov.figure.IntegerPropertyType;
-import ru.spb.nkurasov.figure.StringPropertyType;
-import ru.spb.nkurasov.figure.editor.BooleanProperty;
 import ru.spb.nkurasov.figure.editor.FigureProperty;
-import ru.spb.nkurasov.figure.editor.IntegerProperty;
-import ru.spb.nkurasov.figure.editor.StringProperty;
 import ru.spb.nkurasov.figure.editor.service.FigureActivationChangedListener;
 import ru.spb.nkurasov.figure.editor.service.FigureService;
 
@@ -64,6 +56,7 @@ public class FigurePropertiesView extends ViewPart {
         propertyValueColumn.getColumn().setToolTipText("Property Value");
         propertyValueColumn.getColumn().setWidth(100);
         propertyValueColumn.setLabelProvider(new PropertyValueLabelProvider());
+        propertyValueColumn.setEditingSupport(new FigurePropertyEditingSupport(propertiesTable));
 
         propertiesTable.setInput(selectedFigureProperties);
     }
@@ -97,59 +90,11 @@ public class FigurePropertiesView extends ViewPart {
         public String getText(Object element) {
             if (element instanceof FigureProperty) {
                 FigureProperty property = (FigureProperty) element;
-                FigurePropertyValueExtractor valueExtractor = new FigurePropertyValueExtractor(property);
-                property.getType().accept(valueExtractor);
+                FigurePropertyValueGetter valueExtractor = new FigurePropertyValueGetter();
+                property.accept(valueExtractor);
                 return valueExtractor.getPropertyValue();
             }
             return super.getText(element);
-        }
-    }
-
-    private static class FigurePropertyValueExtractor implements FigurePropertyTypeVisitor {
-
-        private final FigureProperty property;
-
-        private String propertyValue;
-
-        FigurePropertyValueExtractor(FigureProperty property) {
-            this.property = property;
-        }
-
-        @Override
-        public void visit(BooleanPropertyType propertyType) {
-            ((BooleanProperty) property).getValue().ifPresent(this::setBooleanValue);
-        }
-
-        private void setBooleanValue(Boolean value) {
-            propertyValue = value.toString();
-        }
-
-        @Override
-        public void visit(StringPropertyType propertyType) {
-            ((StringProperty) property).getValue().ifPresent(this::setStringValue);
-        }
-
-        private void setStringValue(String value) {
-            propertyValue = value;
-        }
-
-        @Override
-        public void visit(IntegerPropertyType propertyType) {
-            ((IntegerProperty) property).getValue().ifPresent(this::setIntegerValue);
-        }
-
-        private void setIntegerValue(Integer value) {
-            propertyValue = value.toString();
-        }
-
-        @Override
-        public void visit(GroupPropertyType propertyType) {
-            // FIXME
-            throw new UnsupportedOperationException();
-        }
-
-        public String getPropertyValue() {
-            return propertyValue;
         }
     }
 }
