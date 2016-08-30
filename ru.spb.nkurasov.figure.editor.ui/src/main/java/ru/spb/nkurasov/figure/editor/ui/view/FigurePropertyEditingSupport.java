@@ -5,7 +5,6 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +39,6 @@ public class FigurePropertyEditingSupport extends EditingSupport {
     @Override
     protected Object getValue(Object element) {
         if (element instanceof FigureProperty) {
-            System.out.println(element);
             FigurePropertyValueGetter valueExtractor = new FigurePropertyValueGetter();
             ((FigureProperty) element).accept(valueExtractor);
             return valueExtractor.getPropertyValue();
@@ -75,36 +73,28 @@ public class FigurePropertyEditingSupport extends EditingSupport {
             editor.setLabelProvider(new LabelProvider());
             editor.setContentProvider(ArrayContentProvider.getInstance());
             editor.setInput(new Boolean[] { true, false });
-            editor.setValidator(new ICellEditorValidator() {
-
-                @Override
-                public String isValid(Object value) {
-                    return value != null ? null : "Value must be specified";
-                }
-            });
+            editor.setValidator(value -> value != null ? null : "Value must be specified");
             cellEditor = editor;
         }
 
         @Override
         public void visit(IntegerProperty property) {
             TextCellEditor editor = new TextCellEditor(parent);
-            editor.setValidator(new ICellEditorValidator() {
-
-                @Override
-                public String isValid(Object value) {
-                    if (value instanceof String) {
-                        try {
-                            Integer.valueOf(value.toString());
-                            return null;
-                        } catch (NumberFormatException e) {
-                            return "value is not a number";
-                        }
-                    } else {
-                        return "null value";
-                    }
-                }
-            });
+            editor.setValidator(this::validateIntegerValue);
             cellEditor = editor;
+        }
+        
+        private String validateIntegerValue(Object value) {
+            if (value instanceof String) {
+                try {
+                    Integer.valueOf(value.toString());
+                    return null;
+                } catch (NumberFormatException e) {
+                    return "value is not a number";
+                }
+            } else {
+                return "null value";
+            }
         }
 
         @Override
