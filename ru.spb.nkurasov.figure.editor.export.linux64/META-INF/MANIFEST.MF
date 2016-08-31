@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Linux64
+Bundle-SymbolicName: ru.spb.nkurasov.figure.editor.export.linux64
+Bundle-Version: 1.0.0.qualifier

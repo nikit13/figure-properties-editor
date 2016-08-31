@@ -20,17 +20,18 @@
 		<module>ru.spb.nkurasov.figure.editor</module>
 		<module>ru.spb.nkurasov.figure.editor.ui</module>
 		<module>ru.spb.nkurasov.figure.editor.application</module>
+		<module>ru.spb.nkurasov.figure.editor.export.linux64</module>
 	</modules>
 
 	<repositories>
 		<repository>
-			<id>Eclipse Luna</id>
-			<url>http://download.eclipse.org/releases/luna/</url>
+			<id>Eclipse Mars</id>
+			<url>http://download.eclipse.org/releases/mars/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
-			<id>Eclipse Luna Updates</id>
-			<url>http://download.eclipse.org/eclipse/updates/4.4</url>
+			<id>Eclipse Mars Updates</id>
+			<url>http://download.eclipse.org/eclipse/updates/4.5</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
