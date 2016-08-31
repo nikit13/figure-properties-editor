@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.Composite;
 import ru.spb.nkurasov.figure.editor.BooleanProperty;
 import ru.spb.nkurasov.figure.editor.FigureProperty;
 import ru.spb.nkurasov.figure.editor.FigurePropertyVisitor;
+import ru.spb.nkurasov.figure.editor.GroupProperty;
+import ru.spb.nkurasov.figure.editor.GroupedFigureProperty;
 import ru.spb.nkurasov.figure.editor.IntegerProperty;
 import ru.spb.nkurasov.figure.editor.StringProperty;
 
@@ -51,6 +53,14 @@ public class FigurePropertyEditingSupport extends EditingSupport {
 
     @Override
     protected boolean canEdit(Object element) {
+        // свойства из группы можно редактировать только тогда, когда группа
+        // доступна для редактирования
+        if (element instanceof GroupedFigureProperty) {
+            GroupedFigureProperty groupedProperty = (GroupedFigureProperty) element;
+            return groupedProperty.getGroup().isEnabled();
+        }
+
+        // все остальные свойства можно редактировать
         return element instanceof FigureProperty;
     }
 
@@ -60,8 +70,7 @@ public class FigurePropertyEditingSupport extends EditingSupport {
             FigureProperty property = (FigureProperty) element;
             FigurePropertyValueGetter valueGetter = new FigurePropertyValueGetter();
             property.accept(valueGetter);
-            Object propertyValue = valueGetter.getPropertyValue();
-            return propertyValue;
+            return valueGetter.getPropertyValue();
         }
         return null;
     }
@@ -135,6 +144,14 @@ public class FigurePropertyEditingSupport extends EditingSupport {
         public CellEditor getCellEditor() {
             return cellEditor;
         }
+
+        @Override
+        public void visit(GroupProperty property) {
+            CheckboxCellEditor editor = new CheckboxCellEditor(parent);
+            editor.setValidator(value -> value != null ? null : "value must be specified");
+            editor.addListener(new ReportErrorMessagesCellEditorListener(editor, property, editingCallback));
+            cellEditor = editor;
+        }
     }
 
     private static class ReportErrorMessagesCellEditorListener implements ICellEditorListener {
@@ -205,15 +222,16 @@ public class FigurePropertyEditingSupport extends EditingSupport {
 
         @Override
         public void visit(IntegerProperty property) {
-            property.getValue().ifPresent(this::setIntegerValue);
-        }
-
-        private void setIntegerValue(Integer value) {
-            propertyValue = value.toString();
+            propertyValue = property.getValue().orElse(0).toString();
         }
 
         public Object getPropertyValue() {
             return propertyValue;
+        }
+
+        @Override
+        public void visit(GroupProperty property) {
+            propertyValue = property.isEnabled();
         }
     }
 }

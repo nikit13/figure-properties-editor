@@ -2,6 +2,7 @@ package ru.spb.nkurasov.figure.editor.ui.view;
 
 import ru.spb.nkurasov.figure.editor.BooleanProperty;
 import ru.spb.nkurasov.figure.editor.FigurePropertyVisitor;
+import ru.spb.nkurasov.figure.editor.GroupProperty;
 import ru.spb.nkurasov.figure.editor.IntegerProperty;
 import ru.spb.nkurasov.figure.editor.StringProperty;
 
@@ -43,6 +44,15 @@ public class FigurePropertyValueSetter implements FigurePropertyVisitor {
             property.setValue(null);
         } else {
             property.setValue(value.toString());
+        }
+    }
+
+    @Override
+    public void visit(GroupProperty property) {
+        if (value == null) {
+            property.setEnabled(false);
+        } else if (value instanceof Boolean) {
+            property.setEnabled((Boolean) value);
         }
     }
 }

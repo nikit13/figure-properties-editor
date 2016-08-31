@@ -2,6 +2,7 @@ package ru.spb.nkurasov.figure.editor.ui.view;
 
 import ru.spb.nkurasov.figure.editor.BooleanProperty;
 import ru.spb.nkurasov.figure.editor.FigurePropertyVisitor;
+import ru.spb.nkurasov.figure.editor.GroupProperty;
 import ru.spb.nkurasov.figure.editor.IntegerProperty;
 import ru.spb.nkurasov.figure.editor.StringProperty;
 
@@ -11,7 +12,7 @@ import ru.spb.nkurasov.figure.editor.StringProperty;
  * @author nkurasov
  *
  */
-public class FigurePropertyValueGetter implements FigurePropertyVisitor {
+public class FigurePropertyStringValueGetter implements FigurePropertyVisitor {
 
     private String propertyValue;
 
@@ -35,14 +36,15 @@ public class FigurePropertyValueGetter implements FigurePropertyVisitor {
 
     @Override
     public void visit(IntegerProperty property) {
-        property.getValue().ifPresent(this::setIntegerValue);
+        propertyValue = property.getValue().orElse(0).toString();
     }
 
-    private void setIntegerValue(Integer value) {
-        propertyValue = value.toString();
+    @Override
+    public void visit(GroupProperty property) {
+        propertyValue = Boolean.valueOf(property.isEnabled()).toString();
     }
 
     public String getPropertyValue() {
-        return propertyValue.toString();
+        return propertyValue == null ? "" : propertyValue.toString();
     }
 }

@@ -14,4 +14,18 @@ public interface FigurePropertyVisitor {
 
     void visit(StringProperty property);
 
+    void visit(GroupProperty property);
+
+    default void visit(GroupedBooleanProperty property) {
+        visit((BooleanProperty) property);
+    }
+
+    default void visit(GroupedStringProperty property) {
+        visit((StringProperty) property);
+    }
+
+    default void visit(GroupedIntegerProperty property) {
+        visit((IntegerProperty) property);
+    }
+
 }

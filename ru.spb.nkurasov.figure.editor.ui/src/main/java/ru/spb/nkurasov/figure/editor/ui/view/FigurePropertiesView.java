@@ -34,7 +34,7 @@ public class FigurePropertiesView extends ViewPart {
 
     private final FigureSelectionChangedListener activationListener = f -> {
         selectedFigureProperties.clear();
-        selectedFigureProperties.addAll(f.isEmpty() ? Collections.emptyList() : f.get(0).getProperties());
+        selectedFigureProperties.addAll(f.isEmpty() ? Collections.emptyList() : f.get(0).getFlatProperties());
     };
 
     private FigureService figureService;
@@ -122,7 +122,7 @@ public class FigurePropertiesView extends ViewPart {
         public String getText(Object element) {
             if (element instanceof FigureProperty) {
                 FigureProperty property = (FigureProperty) element;
-                FigurePropertyValueGetter valueExtractor = new FigurePropertyValueGetter();
+                FigurePropertyStringValueGetter valueExtractor = new FigurePropertyStringValueGetter();
                 property.accept(valueExtractor);
                 return valueExtractor.getPropertyValue();
             }

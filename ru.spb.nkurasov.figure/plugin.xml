@@ -13,7 +13,6 @@
          <integerProperty
                boundedAbove="false"
                boundedBelow="false"
-               defaultValue="0"
                name="X">
          </integerProperty>
          <integerProperty
@@ -22,6 +21,14 @@
                defaultValue="0"
                name="Y">
          </integerProperty>
+         <groupProperty
+               name="circular">
+            <integerProperty
+                  boundedAbove="false"
+                  boundedBelow="false"
+                  name="Raduis">
+            </integerProperty>
+         </groupProperty>
       </figure>
    </extension>
 </plugin>
