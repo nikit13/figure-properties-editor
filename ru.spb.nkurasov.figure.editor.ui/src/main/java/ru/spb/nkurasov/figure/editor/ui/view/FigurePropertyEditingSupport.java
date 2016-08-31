@@ -116,15 +116,29 @@ public class FigurePropertyEditingSupport extends EditingSupport {
         @Override
         public void visit(IntegerProperty property) {
             TextCellEditor editor = new TextCellEditor(parent);
-            editor.setValidator(this::validateIntegerValue);
+            editor.setValidator(v -> validateIntegerValue(property, v));
             editor.addListener(new ReportErrorMessagesCellEditorListener(editor, property, editingCallback));
             cellEditor = editor;
         }
 
-        private String validateIntegerValue(Object value) {
+        private String validateIntegerValue(IntegerProperty property, Object value) {
             if (value instanceof String) {
                 try {
-                    Integer.valueOf(value.toString());
+                    final int parsed = Integer.valueOf(value.toString());
+                    if (property.hasMinValue()) {
+                        final int minValue = property.getMinValue();
+                        if (parsed < minValue) {
+                            return "value should be greater than or equal " + minValue;
+                        }
+                    }
+
+                    if (property.hasMaxValue()) {
+                        final int maxValue = property.getMaxValue();
+                        if (parsed > maxValue) {
+                            return "value should be less than or equal " + maxValue;
+                        }
+                    }
+
                     return null;
                 } catch (NumberFormatException e) {
                     return "value " + value + " is not a number";

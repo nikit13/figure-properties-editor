@@ -11,8 +11,9 @@
                name="visible">
          </booleanProperty>
          <integerProperty
-               boundedAbove="false"
+               boundedAbove="true"
                boundedBelow="false"
+               maxValue="123"
                name="X">
          </integerProperty>
          <integerProperty

@@ -1,12 +1,14 @@
 package ru.spb.nkurasov.figure;
 
+import java.util.Optional;
+
 public class IntegerPropertyType extends AbstractFigurePropertyType {
 
-    private final Integer defaultValue;
+    private final Optional<Integer> defaultValue;
 
-    private final Integer minValue;
+    private final Optional<Integer> minValue;
 
-    private final Integer maxValue;
+    private final Optional<Integer> maxValue;
 
     IntegerPropertyType(String name, Integer defaultValue, Integer minValue, Integer maxValue) {
         super(name);
@@ -17,9 +19,9 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
 
         // TODO add range checks
 
-        this.defaultValue = defaultValue;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+        this.defaultValue = Optional.ofNullable(defaultValue);
+        this.minValue = Optional.ofNullable(minValue);
+        this.maxValue = Optional.ofNullable(maxValue);
     }
 
     @Override
@@ -28,7 +30,7 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
     }
 
     public Integer getDefaultValue() {
-        return defaultValue;
+        return defaultValue.orElse(null);
     }
 
     public boolean hasDefaultValue() {
@@ -36,10 +38,18 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
     }
 
     public Integer getMinValue() {
-        return minValue;
+        return minValue.orElse(null);
+    }
+
+    public boolean hasMinValue() {
+        return minValue.isPresent();
     }
 
     public Integer getMaxValue() {
-        return maxValue;
+        return maxValue.orElse(null);
+    }
+
+    public boolean hasMaxValue() {
+        return maxValue.isPresent();
     }
 }

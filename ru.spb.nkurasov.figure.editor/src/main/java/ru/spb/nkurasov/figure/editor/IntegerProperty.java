@@ -33,6 +33,22 @@ public class IntegerProperty implements FigureProperty {
         return value;
     }
 
+    public boolean hasMinValue() {
+        return type.hasMinValue();
+    }
+
+    public Integer getMinValue() {
+        return type.getMinValue();
+    }
+
+    public boolean hasMaxValue() {
+        return type.hasMaxValue();
+    }
+
+    public Integer getMaxValue() {
+        return type.getMaxValue();
+    }
+
     public void setValue(Integer value) {
         this.value = Optional.ofNullable(value);
     }
