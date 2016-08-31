@@ -26,11 +26,12 @@ import ru.spb.nkurasov.figure.editor.service.FigureService;
  * @author nkurasov
  *
  */
+@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class FigurePropertiesView extends ViewPart {
 
     public static final String ID = "ru.spb.nkurasov.figure.editor.ui.view.properties";
 
-    private final WritableList<FigureProperty> selectedFigureProperties = WritableList.withElementType(FigureProperty.class);
+    private final WritableList selectedFigureProperties = WritableList.withElementType(FigureProperty.class);
 
     private final FigureSelectionChangedListener activationListener = f -> {
         selectedFigureProperties.clear();
@@ -52,7 +53,7 @@ public class FigurePropertiesView extends ViewPart {
         TableViewer propertiesTable = new TableViewer(parent);
         propertiesTable.getTable().setLinesVisible(true);
         propertiesTable.getTable().setHeaderVisible(true);
-        propertiesTable.setContentProvider(new ObservableListContentProvider<>(FigureProperty.class));
+        propertiesTable.setContentProvider(new ObservableListContentProvider());
 
         TableViewerColumn propertyNameColumn = new TableViewerColumn(propertiesTable, SWT.LEFT);
         propertyNameColumn.getColumn().setText("Name");

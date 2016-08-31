@@ -25,7 +25,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -55,13 +54,14 @@ public class AddFigureHandler extends AbstractHandler {
         return null;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
     private static class AddFigureDialog extends TitleAreaDialog {
 
         private final List<FigureType> availableTypes;
 
-        private final WritableValue<String> figureName = WritableValue.withValueType(String.class);
+        private final WritableValue figureName = WritableValue.withValueType(String.class);
 
-        private final WritableValue<FigureType> figureType = WritableValue.withValueType(FigureType.class);
+        private final WritableValue figureType = WritableValue.withValueType(FigureType.class);
 
         private final DataBindingContext context = new DataBindingContext();
 
@@ -95,10 +95,10 @@ public class AddFigureHandler extends AbstractHandler {
             Text nameText = new Text(container, SWT.BORDER);
             nameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-            ISWTObservableValue<String> targetName = WidgetProperties.textText(SWT.Modify).observe(nameText);
-            UpdateValueStrategy<String, String> figureNameStrategy = new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE);
+            ISWTObservableValue targetName = WidgetProperties.text(SWT.Modify).observe(nameText);
+            UpdateValueStrategy figureNameStrategy = new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
             figureNameStrategy.setAfterGetValidator(this::validateFigureName);
-            context.bindValue(targetName, figureName, figureNameStrategy, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_NEVER));
+            context.bindValue(targetName, figureName, figureNameStrategy, new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 
             Label typeLabel = new Label(container, SWT.NONE);
             typeLabel.setText("Figure Type:");
@@ -110,10 +110,10 @@ public class AddFigureHandler extends AbstractHandler {
             typeCombo.setLabelProvider(new FigureTypeNameLabelProvider());
             typeCombo.setInput(availableTypes);
 
-            IViewerObservableValue<Viewer> targetType = ViewerProperties.singleSelection().observe(typeCombo);
-            UpdateValueStrategy<Object, FigureType> figureTypeStrategy = new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE);
+            IViewerObservableValue targetType = ViewerProperties.singleSelection().observe(typeCombo);
+            UpdateValueStrategy figureTypeStrategy = new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
             figureTypeStrategy.setAfterConvertValidator(this::validateFigureType);
-            context.bindValue(targetType, figureType, figureTypeStrategy, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_NEVER));
+            context.bindValue(targetType, figureType, figureTypeStrategy, new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
             if (!availableTypes.isEmpty()) {
                 typeCombo.setSelection(new StructuredSelection(availableTypes.get(0)));
             }
@@ -123,11 +123,13 @@ public class AddFigureHandler extends AbstractHandler {
             return control;
         }
 
-        private IStatus validateFigureName(String figureName) {
+        private IStatus validateFigureName(Object e) {
+            String figureName = (String) e;
             return figureName != null && !figureName.isEmpty() ? ValidationStatus.ok() : ValidationStatus.error("figure name must not be empty");
         }
 
-        private IStatus validateFigureType(FigureType type) {
+        private IStatus validateFigureType(Object e) {
+            FigureType type = (FigureType) e;
             return type != null ? ValidationStatus.ok() : ValidationStatus.error("figure type is null");
         }
 
@@ -138,20 +140,20 @@ public class AddFigureHandler extends AbstractHandler {
             Button okButton = getButton(OK);
             AggregateValidationStatus validationStatus = new AggregateValidationStatus(context.getBindings(), AggregateValidationStatus.MAX_SEVERITY);
 
-            IObservableValue<Boolean> validationOk = new ComputedValue<Boolean>() {
+            IObservableValue validationOk = new ComputedValue() {
 
                 @Override
                 protected Boolean calculate() {
-                    return validationStatus.getValue().isOK();
+                    return ((IStatus) validationStatus.getValue()).isOK();
                 }
             };
-            ISWTObservableValue<Boolean> buttonEnablement = WidgetProperties.enabledControl().observe(okButton);
-            context.bindValue(validationOk, buttonEnablement, new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_UPDATE),
-                    new UpdateValueStrategy<>(UpdateValueStrategy.POLICY_NEVER));
+            ISWTObservableValue buttonEnablement = WidgetProperties.enabled().observe(okButton);
+            context.bindValue(validationOk, buttonEnablement, new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
+                    UpdateValueStrategy.POLICY_NEVER));
         }
 
         public Figure createFigure() {
-            return new Figure(figureName.getValue(), figureType.getValue());
+            return new Figure((String) figureName.getValue(), (FigureType) figureType.getValue());
         }
 
         private static class FigureTypeNameLabelProvider extends LabelProvider {

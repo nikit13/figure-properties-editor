@@ -26,11 +26,12 @@ import ru.spb.nkurasov.figure.editor.service.RemoveFigureListener;
  * @author nkurasov
  *
  */
+@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class FiguresView extends ViewPart {
 
     public static final String ID = "ru.spb.nkurasov.figure.editor.ui.view.figures";
 
-    private final WritableList<Figure> figures = WritableList.withElementType(Figure.class);
+    private final WritableList figures = WritableList.withElementType(Figure.class);
 
     private final AddFigureListener addFigureListener = f -> figures.add(f);
 
@@ -50,7 +51,7 @@ public class FiguresView extends ViewPart {
     @Override
     public void createPartControl(Composite parent) {
         TableViewer figuresTable = new TableViewer(parent);
-        figuresTable.setContentProvider(new ObservableListContentProvider<Figure>(Figure.class));
+        figuresTable.setContentProvider(new ObservableListContentProvider());
         figuresTable.getTable().setHeaderVisible(true);
         figuresTable.getTable().setLinesVisible(true);
 
@@ -71,7 +72,6 @@ public class FiguresView extends ViewPart {
         figuresTable.setInput(figures);
         figuresTable.addSelectionChangedListener(new ISelectionChangedListener() {
 
-            @SuppressWarnings("unchecked")
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
