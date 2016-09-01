@@ -26,13 +26,13 @@
 
 	<repositories>
 		<repository>
-			<id>Eclipse Mars</id>
-			<url>http://download.eclipse.org/releases/mars/</url>
+			<id>Eclipse Neon</id>
+			<url>http://download.eclipse.org/releases/neon/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
-			<id>Eclipse Mars Updates</id>
-			<url>http://download.eclipse.org/eclipse/updates/4.5</url>
+			<id>Eclipse Neon Updates</id>
+			<url>http://download.eclipse.org/eclipse/updates/4.6</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
@@ -57,14 +57,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
-				<executions>
-					<execution>
-						<id>export</id>
-						<goals>
-							<goal>target-platform</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
 					<environments>
 						<environment>

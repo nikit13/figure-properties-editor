@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="ru.spb.nkurasov.figure.editor.export" uid="ru.spb.nkurasov.figure.editor.export" id="ru.spb.nkurasov.figure.editor.application.product" application="ru.spb.nkurasov.figure.editor.application.application" version="0.0.1" useFeatures="false" includeLaunchers="true">
+<product name="Figure Properties Editor" uid="ru.spb.nkurasov.figure.editor.export" id="ru.spb.nkurasov.figure.editor.application.product" application="ru.spb.nkurasov.figure.editor.application.application" version="0.0.1" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
