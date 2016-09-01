@@ -10,7 +10,9 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
 
     private final Optional<Integer> maxValue;
 
-    IntegerPropertyType(String name, Integer defaultValue, Integer minValue, Integer maxValue) {
+    private final boolean activeOnGroupEnabled;
+
+    IntegerPropertyType(String name, Integer defaultValue, Integer minValue, Integer maxValue, boolean activeOnGroupEnabled) {
         super(name);
 
         if (minValue != null && maxValue != null && minValue > maxValue) {
@@ -22,6 +24,7 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
         this.defaultValue = Optional.ofNullable(defaultValue);
         this.minValue = Optional.ofNullable(minValue);
         this.maxValue = Optional.ofNullable(maxValue);
+        this.activeOnGroupEnabled = activeOnGroupEnabled;
     }
 
     @Override
@@ -51,5 +54,9 @@ public class IntegerPropertyType extends AbstractFigurePropertyType {
 
     public boolean hasMaxValue() {
         return maxValue.isPresent();
+    }
+
+    public boolean isActiveOnGroupEnabled() {
+        return activeOnGroupEnabled;
     }
 }

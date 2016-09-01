@@ -81,6 +81,15 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="onGroupEnabled" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  NOTE: данный атрибут используется только в свойствах, установленных в какой-либо группе. В противном случае данный атрибут игнорирется.
+
+Если установлено значение true, свойство будет активно при активной группе, если false - наоборот
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -128,6 +137,15 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="onGroupEnabled" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  NOTE: данный атрибут используется только в свойствах, установленных в какой-либо группе. В противном случае данный атрибут игнорирется.
+
+Если установлено значение true, свойство будет активно при активной группе, если false - наоборот
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -144,6 +162,15 @@
             <annotation>
                <documentation>
                   
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="onGroupEnabled" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  NOTE: данный атрибут используется только в свойствах, установленных в какой-либо группе. В противном случае данный атрибут игнорирется.
+
+Если установлено значение true, свойство будет активно при активной группе, если false - наоборот
                </documentation>
             </annotation>
          </attribute>

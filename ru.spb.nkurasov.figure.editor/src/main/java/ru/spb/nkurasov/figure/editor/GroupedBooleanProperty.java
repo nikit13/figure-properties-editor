@@ -19,9 +19,19 @@ public class GroupedBooleanProperty extends BooleanProperty implements GroupedFi
     public GroupProperty getGroup() {
         return group;
     }
-    
+
     @Override
     public void accept(FigurePropertyVisitor visitor) {
-       visitor.visit(this);
+        visitor.visit(this);
+    }
+    
+    @Override
+    public BooleanPropertyType getType() {
+        return (BooleanPropertyType) super.getType();
+    }
+    
+    @Override
+    public boolean isActiveOnGroupEnabled() {
+        return getType().isActiveOnGroupEnabled();
     }
 }

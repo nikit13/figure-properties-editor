@@ -57,18 +57,25 @@ public class FigureTypes {
         String defaultValue = property.getAttribute("defaultValue");
 
         switch (property.getName()) {
-        case "booleanProperty":
-            return new BooleanPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue));
-        case "stringProperty":
-            return new StringPropertyType(propertyName, defaultValue);
-        case "integerProperty":
+        case "booleanProperty": {
+            boolean activeOnGroupEnabled = Boolean.valueOf(property.getAttribute("onGroupEnabled"));
+            return new BooleanPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Boolean.valueOf(defaultValue),
+                    activeOnGroupEnabled);
+        }
+        case "stringProperty": {
+            boolean activeOnGroupEnabled = Boolean.valueOf(property.getAttribute("onGroupEnabled"));
+            return new StringPropertyType(propertyName, defaultValue, activeOnGroupEnabled);
+        }
+        case "integerProperty": {
             boolean boundedBelow = Boolean.valueOf(property.getAttribute("boundedBelow"));
             boolean boundedAbove = Boolean.valueOf(property.getAttribute("boundedAbove"));
             String minValue = property.getAttribute("minValue");
             String maxValue = property.getAttribute("maxValue");
+            boolean activeOnGroupEnabled = Boolean.valueOf(property.getAttribute("onGroupEnabled"));
             return new IntegerPropertyType(propertyName, defaultValue == null || defaultValue.isEmpty() ? null : Integer.valueOf(defaultValue),
                     !boundedBelow || minValue == null || minValue.isEmpty() ? null : Integer.valueOf(minValue), !boundedAbove || maxValue == null
-                            || maxValue.isEmpty() ? null : Integer.valueOf(maxValue));
+                            || maxValue.isEmpty() ? null : Integer.valueOf(maxValue), activeOnGroupEnabled);
+        }
         case "groupProperty":
             return new GroupPropertyType(propertyName, readProperties(property.getChildren()));
         default:

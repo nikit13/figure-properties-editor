@@ -57,7 +57,7 @@ public class FigurePropertyEditingSupport extends EditingSupport {
         // доступна для редактирования
         if (element instanceof GroupedFigureProperty) {
             GroupedFigureProperty groupedProperty = (GroupedFigureProperty) element;
-            return groupedProperty.getGroup().isEnabled();
+            return groupedProperty.isEnabled();
         }
 
         // все остальные свойства можно редактировать

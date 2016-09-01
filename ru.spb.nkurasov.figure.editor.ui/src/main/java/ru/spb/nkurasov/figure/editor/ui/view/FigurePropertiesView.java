@@ -110,7 +110,7 @@ public class FigurePropertiesView extends ViewPart {
     }
 
     private static Color choseForegroundForGroupedProperty(GroupedFigureProperty groupedProperty) {
-        if (groupedProperty.getGroup().isEnabled()) {
+        if (groupedProperty.isEnabled()) {
             return new Color(PlatformUI.getWorkbench().getDisplay(), 0, 0, 0);
         } else {
             return new Color(PlatformUI.getWorkbench().getDisplay(), 170, 170, 170);

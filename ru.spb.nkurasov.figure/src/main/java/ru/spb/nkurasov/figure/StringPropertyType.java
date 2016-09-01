@@ -4,10 +4,13 @@ public class StringPropertyType extends AbstractFigurePropertyType {
 
     private final String defaultValue;
 
-    StringPropertyType(String name, String defaultValue) {
+    private final boolean activeOnGroupEnabled;
+
+    StringPropertyType(String name, String defaultValue, boolean activeOnGroupEnabled) {
         super(name);
 
         this.defaultValue = defaultValue;
+        this.activeOnGroupEnabled = activeOnGroupEnabled;
     }
 
     @Override
@@ -21,5 +24,9 @@ public class StringPropertyType extends AbstractFigurePropertyType {
 
     public boolean hasDefaultValue() {
         return defaultValue != null;
+    }
+
+    public boolean isActiveOnGroupEnabled() {
+        return activeOnGroupEnabled;
     }
 }

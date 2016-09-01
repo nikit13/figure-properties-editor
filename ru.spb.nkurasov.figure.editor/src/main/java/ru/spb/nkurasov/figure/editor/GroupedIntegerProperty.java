@@ -19,4 +19,19 @@ public class GroupedIntegerProperty extends IntegerProperty implements GroupedFi
     public GroupProperty getGroup() {
         return group;
     }
+    
+    @Override
+    public void accept(FigurePropertyVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    @Override
+    public IntegerPropertyType getType() {
+        return (IntegerPropertyType) super.getType();
+    }
+    
+    @Override
+    public boolean isActiveOnGroupEnabled() {
+        return getType().isActiveOnGroupEnabled();
+    }
 }

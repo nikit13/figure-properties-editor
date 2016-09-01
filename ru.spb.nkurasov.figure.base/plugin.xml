@@ -10,14 +10,16 @@
                boundedBelow="true"
                defaultValue="0"
                minValue="0"
-               name="X">
+               name="X"
+               onGroupEnabled="true">
          </integerProperty>
          <integerProperty
                boundedAbove="false"
                boundedBelow="true"
                defaultValue="0"
                minValue="0"
-               name="Y">
+               name="Y"
+               onGroupEnabled="true">
          </integerProperty>
          <groupProperty
                name="isCicrcle">
@@ -25,7 +27,24 @@
                   boundedAbove="false"
                   boundedBelow="true"
                   minValue="0"
-                  name="Radius">
+                  name="Radius"
+                  onGroupEnabled="true">
+            </integerProperty>
+            <integerProperty
+                  boundedAbove="false"
+                  boundedBelow="true"
+                  defaultValue="0"
+                  minValue="0"
+                  name="RadiusX"
+                  onGroupEnabled="false">
+            </integerProperty>
+            <integerProperty
+                  boundedAbove="false"
+                  boundedBelow="true"
+                  defaultValue="0"
+                  minValue="0"
+                  name="RaduisY"
+                  onGroupEnabled="false">
             </integerProperty>
          </groupProperty>
       </figure>
@@ -36,28 +55,32 @@
                boundedBelow="true"
                defaultValue="0"
                minValue="0"
-               name="X">
+               name="X"
+               onGroupEnabled="true">
          </integerProperty>
          <integerProperty
                boundedAbove="false"
                boundedBelow="true"
                defaultValue="0"
                minValue="0"
-               name="Y">
+               name="Y"
+               onGroupEnabled="true">
          </integerProperty>
          <integerProperty
                boundedAbove="false"
                boundedBelow="true"
                defaultValue="0"
                minValue="0"
-               name="Width">
+               name="Width"
+               onGroupEnabled="true">
          </integerProperty>
          <integerProperty
                boundedAbove="false"
                boundedBelow="true"
                defaultValue="0"
                minValue="0"
-               name="Height">
+               name="Height"
+               onGroupEnabled="true">
          </integerProperty>
       </figure>
    </extension>
