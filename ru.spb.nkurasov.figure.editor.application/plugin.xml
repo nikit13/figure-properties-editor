@@ -18,7 +18,11 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="ru.spb.nkurasov.figure.editor.application.application"
-            name="ru.spb.nkurasov.figure.editor">
+            name="ru.spb.nkurasov.figure.editor.export">
+         <property
+               name="appName"
+               value="ru.spb.nkurasov.figure.editor.export">
+         </property>
       </product>
    </extension>
 </plugin>
