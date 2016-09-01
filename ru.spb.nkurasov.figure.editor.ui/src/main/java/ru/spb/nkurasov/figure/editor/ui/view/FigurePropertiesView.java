@@ -10,12 +10,15 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import ru.spb.nkurasov.figure.editor.FigureProperty;
+import ru.spb.nkurasov.figure.editor.GroupedFigureProperty;
 import ru.spb.nkurasov.figure.editor.service.FigureSelectionChangedListener;
 import ru.spb.nkurasov.figure.editor.service.FigureService;
 
@@ -106,14 +109,34 @@ public class FigurePropertiesView extends ViewPart {
         // do nothing
     }
 
+    private static Color choseForegroundForGroupedProperty(GroupedFigureProperty groupedProperty) {
+        if (groupedProperty.getGroup().isEnabled()) {
+            return new Color(PlatformUI.getWorkbench().getDisplay(), 0, 0, 0);
+        } else {
+            return new Color(PlatformUI.getWorkbench().getDisplay(), 170, 170, 170);
+        }
+    }
+
     private static class PropertyNameLabelProvider extends ColumnLabelProvider {
 
         @Override
         public String getText(Object element) {
-            if (element instanceof FigureProperty) {
+            if (element instanceof GroupedFigureProperty) {
+                GroupedFigureProperty groupedProperty = (GroupedFigureProperty) element;
+                return " - " + groupedProperty.getName();
+            } else if (element instanceof FigureProperty) {
                 return ((FigureProperty) element).getName();
             }
             return super.getText(element);
+        }
+
+        @Override
+        public Color getForeground(Object element) {
+            if (element instanceof GroupedFigureProperty) {
+                GroupedFigureProperty groupedProperty = (GroupedFigureProperty) element;
+                return choseForegroundForGroupedProperty(groupedProperty);
+            }
+            return super.getForeground(element);
         }
     }
 
@@ -128,6 +151,15 @@ public class FigurePropertiesView extends ViewPart {
                 return valueExtractor.getPropertyValue();
             }
             return super.getText(element);
+        }
+
+        @Override
+        public Color getForeground(Object element) {
+            if (element instanceof GroupedFigureProperty) {
+                GroupedFigureProperty groupedProperty = (GroupedFigureProperty) element;
+                return choseForegroundForGroupedProperty(groupedProperty);
+            }
+            return super.getForeground(element);
         }
     }
 }

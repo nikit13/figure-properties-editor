@@ -21,6 +21,7 @@
 		<module>ru.spb.nkurasov.figure.editor.ui</module>
 		<module>ru.spb.nkurasov.figure.editor.application</module>
 		<module>ru.spb.nkurasov.figure.editor.export.linux64</module>
+		<module>ru.spb.nkurasov.figure.base</module>
 	</modules>
 
 	<repositories>

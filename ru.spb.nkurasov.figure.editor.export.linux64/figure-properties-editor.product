@@ -3,7 +3,6 @@
 
 <product name="ru.spb.nkurasov.figure.editor.export" uid="ru.spb.nkurasov.figure.editor.export" id="ru.spb.nkurasov.figure.editor.application.product" application="ru.spb.nkurasov.figure.editor.application.application" version="0.0.1" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -14,7 +13,6 @@
 
    <windowImages/>
 
-
    <launcher name="figure-editor">
       <solaris/>
       <win useIco="false">
@@ -22,11 +20,9 @@
       </win>
    </launcher>
 
-
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
    </vm>
-
 
    <plugins>
       <plugin id="com.ibm.icu"/>
@@ -100,6 +96,7 @@
       <plugin id="org.w3c.dom.smil"/>
       <plugin id="org.w3c.dom.svg"/>
       <plugin id="ru.spb.nkurasov.figure"/>
+      <plugin id="ru.spb.nkurasov.figure.base"/>
       <plugin id="ru.spb.nkurasov.figure.editor"/>
       <plugin id="ru.spb.nkurasov.figure.editor.application"/>
       <plugin id="ru.spb.nkurasov.figure.editor.ui"/>
