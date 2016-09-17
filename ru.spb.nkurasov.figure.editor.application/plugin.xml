@@ -18,10 +18,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="ru.spb.nkurasov.figure.editor.application.application"
-            name="ru.spb.nkurasov.figure.editor.export">
+            name="Figure Properties Editor">
          <property
                name="appName"
-               value="ru.spb.nkurasov.figure.editor.export">
+               value="Figure Properties Editor">
          </property>
       </product>
    </extension>
