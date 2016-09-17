@@ -29,7 +29,7 @@ import ru.spb.nkurasov.figure.editor.service.FigureService;
  * @author nkurasov
  *
  */
-@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class FigurePropertiesView extends ViewPart {
 
     public static final String ID = "ru.spb.nkurasov.figure.editor.ui.view.properties";

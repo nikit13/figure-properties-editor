@@ -7,10 +7,6 @@ public interface GroupedFigureProperty extends FigureProperty {
     boolean isActiveOnGroupEnabled();
 
     default boolean isEnabled() {
-        if (isActiveOnGroupEnabled()) {
-            return getGroup().isEnabled();
-        } else {
-            return !getGroup().isEnabled();
-        }
+    	return !(isActiveOnGroupEnabled() ^ getGroup().isEnabled());
     }
 }

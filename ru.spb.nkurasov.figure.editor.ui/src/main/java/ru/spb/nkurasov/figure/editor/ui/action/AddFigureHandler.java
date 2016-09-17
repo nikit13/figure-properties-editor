@@ -54,7 +54,7 @@ public class AddFigureHandler extends AbstractHandler {
         return null;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
+    @SuppressWarnings({ "rawtypes" })
     private static class AddFigureDialog extends TitleAreaDialog {
 
         private final List<FigureType> availableTypes;

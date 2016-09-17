@@ -26,7 +26,7 @@ import ru.spb.nkurasov.figure.editor.service.RemoveFigureListener;
  * @author nkurasov
  *
  */
-@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class FiguresView extends ViewPart {
 
     public static final String ID = "ru.spb.nkurasov.figure.editor.ui.view.figures";
